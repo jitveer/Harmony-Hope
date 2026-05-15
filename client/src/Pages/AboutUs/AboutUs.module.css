@@ -1,0 +1,245 @@
+.aboutWrapper {
+    font-family: "Poppins", sans-serif;
+    background: #f9f9f9;
+    color: #333;
+}
+
+/* Fade-in Animation */
+.fadeInSection {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Hero Section */
+.heroSection {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url("https://images.unsplash.com/photo-1522202220185-1b2b00a1b4e2") center/cover no-repeat;
+    text-align: center;
+    padding: 6rem 2rem;
+    color: white;
+}
+
+.heroTitle {
+    font-size: 3rem;
+}
+
+.primaryText {
+    color: #ff9257;
+}
+
+.heroSubtitle {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 1rem auto 0;
+}
+
+/* Section Titles */
+.sectionTitle {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #222;
+}
+
+/* Mission */
+.missionSection {
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+.sectionDesc {
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    color: #555;
+}
+
+/* How It Works */
+.howItWorksSection {
+    background: #fff;
+    padding: 4rem 2rem;
+}
+
+.howGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.howCard {
+    background: #fefefe;
+    padding: 2rem;
+    text-align: center;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+}
+
+.howCard:hover {
+    transform: translateY(-5px);
+}
+
+.howIcon {
+    font-size: 2rem;
+    color: #ff9257;
+    margin-bottom: 0.5rem;
+}
+
+/* Values */
+.valuesSection {
+    padding: 4rem 2rem;
+}
+
+.valuesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.valueCard {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.valueCard:hover {
+    transform: translateY(-5px);
+}
+
+.valueIcon {
+    font-size: 2rem;
+    color: #ff9257;
+    margin-bottom: 0.5rem;
+}
+
+/* Team */
+.teamSection {
+    background: #f9f9f9;
+    padding: 4rem 2rem;
+}
+
+.teamGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.teamCard {
+    background: #fff;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+}
+
+.teamCard:hover {
+    transform: translateY(-5px);
+}
+
+.teamCard img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+}
+
+/* CTA Section */
+.ctaSection {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: #ff9257;
+    color: white;
+}
+
+.ctaTitle {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.ctaDesc {
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    opacity: 0.9;
+}
+
+.ctaBtnRow {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.ctaDonateBtn,
+.ctaLearnBtn {
+    background: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.ctaDonateBtn {
+    color: #ff6b6b;
+}
+
+.ctaLearnBtn {
+    background: rgba(255, 255, 255, 0.85);
+    color: #222;
+}
+
+.ctaDonateBtn:hover,
+.ctaLearnBtn:hover {
+    transform: translateY(-3px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .heroTitle {
+        font-size: 2.2rem;
+    }
+
+    .heroSubtitle {
+        font-size: 1rem;
+    }
+
+    .sectionTitle {
+        font-size: 1.8rem;
+    }
+
+    .heroSection {
+        padding: 2rem 2rem;
+        color: white;
+    }
+
+}
+
+@media (max-width: 480px) {
+    .heroTitle {
+        font-size: 1.8rem;
+    }
+
+    .ctaBtnRow {
+        flex-direction: column;
+    }
+
+    .heroSection {
+        padding: 2rem 2rem;
+        color: white;
+    }
+}

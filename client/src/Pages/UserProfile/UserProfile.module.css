@@ -1,0 +1,196 @@
+.profile-container {
+    height: 54vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    margin: 2rem 0;
+    background-color: #f9f9fc;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.profile-card {
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.09);
+    padding: 2rem;
+    width: 100%;
+    max-width: 900px;
+}
+
+.profile-heading h1 {
+    font-size: 1.2rem;
+    color: #6c63ff;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.profile-heading h1::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: #6c63ff;
+    border-radius: 50%;
+    margin-right: 8px;
+    position: relative;
+    top: -2px;
+}
+
+.profile {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.user-img {
+    flex: 1;
+    min-width: 240px;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-image-preview {
+    width: 160px;
+    height: 160px;
+    border-radius: 12px;
+    background-color: #f1f1f1;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-upload button {
+    padding: 0.5rem 1rem;
+    border: 1px dashed #b8b8b8;
+    background-color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #555;
+    transition: all 0.3s ease;
+}
+
+.image-upload button:hover {
+    background-color: #f0f0f0;
+}
+
+.user-details {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.user-name label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #777;
+}
+
+.user-name p {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #222;
+    margin-top: 0.2rem;
+}
+
+.user-edit-profile {
+    margin-top: 1rem;
+}
+
+.user-edit-profile button {
+    padding: 0.5rem 1.5rem;
+    background-color: #6c63ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.user-edit-profile button:hover {
+    background-color: #5848db;
+}
+
+/* Improve input field design */
+.user-name input {
+    width: 100%;
+    padding: 0.6rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s;
+    margin-top: 4px;
+}
+
+.user-name input:focus {
+    border-color: #6c63ff;
+    box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+}
+
+.upload-button {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    border: 1px dashed #aaa;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    color: #333;
+    transition: all 0.3s;
+}
+
+.upload-button:hover {
+    background-color: #eaeaea;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .user-details {
+        align-items: center;
+        text-align: center;
+    }
+
+    .user-edit-profile button {
+        width: 100%;
+    }
+
+
+
+
+}

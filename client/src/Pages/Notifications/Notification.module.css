@@ -1,0 +1,225 @@
+/* Notification.module.css */
+
+.container {
+    width: 60%;
+    margin: 2rem auto;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+.title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #111;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.notificationItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #f0f0f3; /* same background as icon for consistent look */
+  padding: 1rem 1.2rem;
+  border-radius: 16px;
+  box-shadow: 8px 8px 16px #d1d9e6,
+              -8px -8px 16px #ffffff;
+  transform: translateY(20px);
+  opacity: 0;
+  animation: slideUp 0.5s ease forwards;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.notificationItem:hover {
+  box-shadow: inset 8px 8px 16px #d1d9e6,
+              inset -8px -8px 16px #ffffff;
+  transform: scale(0.98);
+}
+
+/* Staggered Animation */
+.notificationItem:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.notificationItem:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.notificationItem:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.notificationItem:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.notificationItem:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+/* Slide-up Animation */
+@keyframes slideUp {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+.iconWrapper {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.iconPurple {
+    background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+    color: #fff;
+}
+
+.iconGreen {
+    background: #00c896;
+    color: #fff;
+}
+
+.iconOrange {
+    background: #ff9d76;
+    color: #fff;
+}
+
+.iconBlue {
+    background: #42a5f5;
+    color: #fff;
+}
+
+.iconGray {
+    background: #d3d3d3;
+    color: #fff;
+}
+
+.textWrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.text {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+    margin: 0;
+}
+
+.time {
+    font-size: 0.8rem;
+    color: #777;
+    margin-top: 0.2rem;
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideUp {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Tablet (max-width: 1024px) */
+@media (max-width: 1024px) {
+    .container {
+        width: 80%;
+        padding: 1.5rem;
+    }
+
+    .title {
+        font-size: 1.5rem;
+    }
+}
+
+/* Mobile (max-width: 767px) */
+@media (max-width: 767px) {
+    .container {
+        width: 92vw;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 1rem;
+    }
+
+    .title {
+        font-size: 1.3rem;
+        text-align: center;
+    }
+
+    .notificationItem {
+        gap: 0.8rem;
+        padding: 0.7rem 0.9rem;
+    }
+
+    /* .iconWrapper {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  } */
+
+
+    .iconWrapper {
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 1.3rem;
+        flex-shrink: 0;
+        background: #f0f0f3;
+        /* light background for neumorphism */
+        box-shadow: 6px 6px 12px #d1d9e6,
+            -6px -6px 12px #ffffff;
+        transition: all 0.3s ease;
+    }
+
+    /* Hover effect for nice press/float animation */
+    .iconWrapper:hover {
+        box-shadow: inset 6px 6px 12px #d1d9e6,
+            inset -6px -6px 12px #ffffff;
+        transform: scale(0.95);
+    }
+
+
+    .text {
+        font-size: 0.9rem;
+    }
+
+    .time {
+        font-size: 0.7rem;
+    }
+}

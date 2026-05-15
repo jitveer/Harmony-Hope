@@ -1,0 +1,222 @@
+.request-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4rem 1rem;
+    background: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);
+    animation: fadeInContainer 0.8s ease;
+}
+
+.request-container h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #5a54ff;
+    margin-bottom: 5rem;
+    position: relative;
+}
+
+.request-container h1::after {
+    content: '';
+    width: 50px;
+    height: 4px;
+    background-color: #5a54ff;
+    position: absolute;
+    left: 50%;
+    bottom: -8px;
+    transform: translateX(-50%);
+    border-radius: 2px;
+    animation: underlineSlide 1s ease forwards;
+}
+
+.request-card {
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 480px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.request-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+}
+
+.request-amount,
+.request-reason {
+    display: flex;
+    flex-direction: column;
+}
+
+.request-amount label,
+.request-reason label {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    color: #333;
+}
+
+.request-amount input,
+.request-reason textarea {
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.request-amount input:focus,
+.request-reason input:focus {
+    border-color: #5a54ff;
+    box-shadow: 0 0 0 3px rgba(90, 84, 255, 0.15);
+    background-color: #f9f9ff;
+}
+
+
+textarea#message {
+    resize: vertical;
+    /* Only vertical resizing */
+    min-height: 100px;
+    /* Optional: starting height */
+    max-height: 500px;
+    /* Maximum height on drag */
+    overflow-y: auto;
+    /* Scroll if content exceeds */
+    overflow-x: hidden;
+    /* Prevent horizontal scrollbar */
+    width: 100%;
+    /* Full width, responsive */
+    padding: 12px;
+    font-size: 16px;
+    line-height: 1.5;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+    background-color: #007bff;
+}
+
+/* Optional: Hover and focus effects */
+textarea#message:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    outline: none;
+}
+
+.request-categories {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+}
+
+
+
+.request-button {
+    display: flex;
+    justify-content: center;
+}
+
+.request-button button {
+    background-color: #5a54ff;
+    color: #fff;
+    padding: 0.85rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.request-button button:hover {
+    background-color: #433bff;
+    transform: scale(1.03);
+}
+
+.request-button button:active {
+    transform: scale(0.98);
+}
+
+/* Animation */
+@keyframes fadeInContainer {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes underlineSlide {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 50px;
+    }
+}
+
+/* Remove number arrows */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+
+
+
+
+/* MOBILE Responsive */
+@media (max-width: 767px) {
+    .request-container {
+        padding: 2rem 1rem;
+    }
+
+    .request-card {
+        width: 90%;
+        padding: 1rem;
+        /* background-color: red; */
+    }
+
+    .request-container h1 {
+        font-size: 1.3rem;
+        margin-top: 0rem;
+        margin-bottom: 2rem;
+    }
+
+    form {
+        gap: 0.7rem;
+    }
+
+    label {
+        font-size: 0.8rem !important;
+        font-weight: 600 !important;
+        margin:0.5rem 0;
+        color: #333333;
+    }
+
+    .request-categories {
+        margin-bottom: 0.5rem;
+    }
+
+    .request-button button {
+        width: 100%;
+    }
+}

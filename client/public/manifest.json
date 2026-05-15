@@ -1,0 +1,34 @@
+{
+  "name": "HarmonyHope Charity",
+  "short_name": "HarmonyHope",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#317EFB",
+  "icons": [
+    {
+      "src": "/src/img/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png" 
+    },
+    {
+      "src": "/src/img/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/src/img/screenshot1.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/src/img/screenshot2.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ]
+}

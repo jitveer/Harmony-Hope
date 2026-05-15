@@ -1,0 +1,209 @@
+.donation-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 1rem;
+    background: linear-gradient(135deg, #f0f4ff, #f8f9fa);
+    min-height: 64vh;
+    animation: fadeSlideIn 1s ease forwards;
+}
+
+.donation-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+    opacity: 0;
+    animation: fadeIn 1.2s ease forwards;
+    animation-delay: 0.4s;
+}
+
+.donation-header h2 {
+    font-size: 2rem;
+    color: #6c63ff;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    transition: transform 0.3s;
+}
+
+.donation-header h2:hover {
+    transform: scale(1.05);
+}
+
+.donation-header p {
+    font-size: 1rem;
+    color: #555;
+    margin: 0.25rem 0;
+    line-height: 1.5;
+    transition: color 0.3s;
+}
+
+.donation-header p:hover {
+    color: #333;
+}
+
+.donation-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 450px;
+    transform: scale(0.95);
+    opacity: 0;
+    animation: cardPopIn 1s ease forwards;
+    animation-delay: 0.6s;
+    transition: transform 0.4s ease;
+}
+
+.donation-card:hover {
+    transform: scale(1) translateY(-4px);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.donation-amount {
+    display: flex;
+    flex-direction: column;
+}
+
+.donation-amount label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 0.5rem;
+}
+
+.donation-amount input {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+    background: #fefefe;
+}
+
+.donation-amount input:focus {
+    border-color: #6c63ff;
+    box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.15);
+    background: #fff;
+}
+
+.submit-donation {
+    display: flex;
+    justify-content: center;
+}
+
+.submit-donation button {
+    padding: 0.75rem 2rem;
+    background-color: #6c63ff;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.submit-donation button:hover {
+    background-color: #5548d8;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(108, 99, 255, 0.3);
+}
+
+.submit-donation button::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: left 0.5s ease;
+}
+
+.submit-donation button:hover::after {
+    left: 100%;
+}
+
+
+/* Hide arrows in number input (Chrome, Safari, Edge) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Hide arrows in number input (Firefox) */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes cardPopIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+/* Responsive */
+@media (max-width: 767px) {
+
+    .donation-container {
+        /* height: 70vh; */
+    }
+
+    .donation-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .donation-header p {
+        font-size: 0.7rem;
+    }
+
+    .donation-card {
+        width: 80%;
+        display: flex;
+        justify-content: center;
+        /* align-items: center; */
+    }
+
+}

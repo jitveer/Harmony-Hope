@@ -1,0 +1,159 @@
+/* Container / page layout */
+.container {
+  min-height: 100vh;
+  padding: 48px 24px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: linear-gradient(180deg, rgba(3,37,76,0.03), rgba(3,37,76,0.02));
+  box-sizing: border-box;
+}
+
+/* Card */
+.card {
+  width: 100%;
+  max-width: 980px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 8px 24px rgba(6, 24, 48, 0.08);
+  color: #12223f;
+  box-sizing: border-box;
+}
+
+/* Header */
+.header {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.75rem;
+  line-height: 1.15;
+  color: #0b2540;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 0;
+  color: #475b7a;
+  font-size: 0.95rem;
+}
+
+/* Content */
+.content {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #243248;
+}
+
+.sectionTitle {
+  margin-top: 18px;
+  margin-bottom: 8px;
+  font-size: 1.08rem;
+  color: #102a43;
+  font-weight: 600;
+}
+
+.list {
+  margin: 8px 0 12px 1.1rem;
+  padding: 0;
+}
+
+/* subtle spacing for lists */
+.list li {
+  margin-bottom: 8px;
+}
+
+/* Contact styling */
+.contact {
+  margin: 8px 0 12px 0;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.contact a {
+  color: #0b63a8;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.contact a:hover,
+.contact a:focus {
+  text-decoration: underline;
+}
+
+.contactNote {
+  color: #66788a;
+  font-size: 0.9rem;
+}
+
+/* Footer note */
+.footerNote {
+  margin-top: 20px;
+  color: #6b7b8e;
+}
+
+/* Accessibility: ensure links and headings are readable */
+.content a {
+  color: #0b63a8;
+  text-decoration: none;
+}
+
+/* Responsive: Tablet (max-width:1024px) */
+@media (max-width: 1024px) {
+  .container {
+    padding: 36px 20px;
+    align-items: flex-start;
+  }
+
+  .card {
+    padding: 28px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.02rem;
+  }
+}
+
+/* Responsive: Mobile (max-width:767px) */
+@media (max-width: 767px) {
+  .container {
+    padding: 18px 14px;
+    align-items: stretch;
+  }
+
+  .card {
+    padding: 18px;
+    border-radius: 10px;
+  }
+
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .content {
+    font-size: 0.95rem;
+  }
+
+  .sectionTitle {
+    margin-top: 12px;
+    font-size: 1rem;
+  }
+
+  .list {
+    margin-left: 1rem;
+  }
+}

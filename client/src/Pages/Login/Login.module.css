@@ -1,0 +1,183 @@
+.LoginContainer {
+  min-height: 100vh;
+  background: linear-gradient(to right, #005c97, #363795);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-card {
+  width: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  color: white;
+  align-items: center;
+}
+
+/* .login-header>h1{
+  margin: .5rem;
+}
+
+.login-header>p {
+  margin: 1rem 0 2rem 0;
+} */
+
+.login-form {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  gap: 10px;
+}
+
+.login-form h2 {
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.login-form input {
+  width: 90%;
+  padding: 0.8rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.login-form button {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #004a7c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.login-form button:hover {
+  background-color: #0080d6;
+  color: rgb(23, 23, 23);
+}
+
+.form-group {
+  margin-bottom: 0 !important;
+}
+
+.form-group>label {
+  text-align: left;
+}
+
+/* .inputSection{
+  display: flex;
+} */
+
+.inputSection {
+  position: relative;
+  width: 100%;
+}
+
+.inputSection input {
+  width: 100%;
+  padding: 0.8rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  padding-right: 40px;
+  /* space for eye button */
+  box-sizing: border-box;
+}
+
+.inputSection button {
+  position: absolute;
+  right: 10px;
+  top: 30%;
+  transform: translateY(-50%);
+  background: none !important;
+  color: black;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inputSection button {
+  background-color: none;
+}
+
+.inputSection>button {
+  width: 32px;
+  height: 27px;
+  background-color: none;
+}
+
+.help-links {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.help-links a {
+  text-decoration: none;
+  color: white;
+}
+
+@media (max-width: 767px) {
+  .LoginContainer {
+    min-height: 0vh;
+    height: 88vh;
+  }
+
+  .login-card {
+    margin: 0px 54px;
+    padding: 0 0;
+    height: 50vh;
+  }
+
+  .login-header>p {
+    margin: 1rem 0;
+  }
+
+  .login-header>h1 {
+    margin: 0 0;
+  }
+
+  .login-form {
+    gap: 0;
+  }
+
+  .form-group input {
+    /* width: 90% !important; */
+  }
+
+  .form-group {
+    margin-bottom: 0rem;
+  }
+
+  .form-group label {
+    margin-bottom: 0 !important;
+  }
+
+  input[type="email"]{
+    width: 90% !important;
+  }
+}
