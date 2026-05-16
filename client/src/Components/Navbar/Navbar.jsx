@@ -93,7 +93,7 @@ function Navbar() {
                     return;
                 }
 
-                const res = await fetch(`${process.env.MY_DOMAIN_IP}/api/user/${userId}`, {
+                const res = await fetch(`${import.meta.env.VITE_MY_DOMAIN_IP}/api/user/${userId}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

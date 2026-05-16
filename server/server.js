@@ -5,23 +5,19 @@ const routes = require("./routes/routes.js");
 const connectDB = require("./config/mongodb.js");
 const app = express();
 
-
 //Database Connection
 connectDB();
-
 
 app.use(cors());
 app.use(express.json());
 
-
+//Api
+app.use("/api", routes);
 
 //Home
 app.use("/", (req, res) => {
   res.json("Hello i am a api");
 });
-
-//Api
-app.use("/api/", routes);
 
 // Start server
 const PORT = process.env.PORT || 5000;

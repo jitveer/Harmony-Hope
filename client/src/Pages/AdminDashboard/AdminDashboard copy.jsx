@@ -18,7 +18,7 @@ const AdminDashboard = () => {
 
   const handleApprove = async (status, id) => {
     try {
-      const res = await fetch(`${process.env.MY_DOMAIN_IP}/api/requests/status/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_MY_DOMAIN_IP}/api/requests/status/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -142,7 +142,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchAllUserRequest = async () => {
       try {
-        const res = await fetch("${process.env.MY_DOMAIN_IP}/api/requests/admin", {
+        const res = await fetch("${import.meta.env.VITE_MY_DOMAIN_IP}/api/requests/admin", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

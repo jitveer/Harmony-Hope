@@ -1,6 +1,6 @@
-import { useLocation, useNavigate } from 'react-router-dom';
-import './UserDashboard.css';
-import { useEffect, useState, useMemo } from 'react';
+import { useLocation, useNavigate } from "react-router-dom";
+import "./UserDashboard.css";
+import { useEffect, useState, useMemo } from "react";
 import { jwtDecode } from "jwt-decode";
 
 const UserDashboard = () => {
@@ -14,12 +14,15 @@ const UserDashboard = () => {
   const requestDelete = async (id) => {
     if (confirm("Are you sure to delete this request?")) {
       try {
-        const res = await fetch(`http://localhost:5000/api/requests/${id}`, {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
+        const res = await fetch(
+          `${import.meta.env.VITE_MY_DOMAIN_IP}/api/requests/${id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        });
+        );
 
         const data = await res.json();
 
@@ -40,13 +43,16 @@ const UserDashboard = () => {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/requests/request_status", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+        const res = await fetch(
+          `${import.meta.env.VITE_MY_DOMAIN_IP}/api/requests/request_status`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
           },
-        });
+        );
 
         const data = await res.json();
         setRequests(data.requests || []);
@@ -72,8 +78,6 @@ const UserDashboard = () => {
     checkPathByRole();
   }, []);
 
-
-
   // CALCULATED DASHBOARD STATS (Dynamic Data)
 
   const dashboardData = useMemo(() => {
@@ -82,7 +86,9 @@ const UserDashboard = () => {
       .reduce((sum, r) => sum + (r.amount || 0), 0);
 
     const totalRequests = requests.length;
-    const activeRequests = requests.filter((r) => r.status === "pending").length;
+    const activeRequests = requests.filter(
+      (r) => r.status === "pending",
+    ).length;
 
     return {
       totalAmount,
@@ -90,10 +96,6 @@ const UserDashboard = () => {
       activeRequests,
     };
   }, [requests]);
-
-
-
-
 
   return (
     <div className="donation-container">
@@ -173,7 +175,9 @@ const UserDashboard = () => {
                 <span className="badge blue">
                   Active: {dashboardData.activeRequests}
                 </span>
-                <span className="badge grey">Total: {dashboardData.totalRequests}</span>
+                <span className="badge grey">
+                  Total: {dashboardData.totalRequests}
+                </span>
               </div>
             </div>
 
@@ -188,7 +192,9 @@ const UserDashboard = () => {
                         <strong>{req.requestCategorie}</strong>
                         <strong>
                           For{" "}
-                          <span style={{ color: "#3b82f6" }}>{req.daysToReturn}</span>{" "}
+                          <span style={{ color: "#3b82f6" }}>
+                            {req.daysToReturn}
+                          </span>{" "}
                           Days
                         </strong>
                       </div>
@@ -202,7 +208,9 @@ const UserDashboard = () => {
                     </div>
                     <div className="request-footer">
                       <span>₹{req.amount}</span>
-                      <span className={`status ${req.status}`}>{req.status}</span>
+                      <span className={`status ${req.status}`}>
+                        {req.status}
+                      </span>
                     </div>
                     <div className="request-actions">
                       <a href="#">View Details</a>

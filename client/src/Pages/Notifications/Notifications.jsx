@@ -35,13 +35,16 @@ const Notifications = () => {
 
       try {
         setLoading(true);
-        const res = await fetch(`http://localhost:5000/api/notifications/${userId}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // token send
+        const res = await fetch(
+          `${import.meta.env.VITE_MY_DOMAIN_IP}/api/notifications/${userId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`, // token send
+            },
           },
-        });
+        );
 
         const data = await res.json();
 

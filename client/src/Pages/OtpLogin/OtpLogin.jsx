@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserTokenValidation } from "../../Components/UserTokenVerification/UserTokenVerification";
-import style from './OtpLogin.module.css'
-
+import style from "./OtpLogin.module.css";
 
 const OtpLogin = ({ onLogin }) => {
   const navigate = useNavigate();
@@ -13,8 +12,8 @@ const OtpLogin = ({ onLogin }) => {
   const [timer, setTimer] = useState(0);
   const [error, setError] = useState("");
 
-  const { isValidToken, userId, setIsValidToken, setUserId } = useUserTokenValidation();
-
+  const { isValidToken, userId, setIsValidToken, setUserId } =
+    useUserTokenValidation();
 
   // Handle Input Change
   const handleChange = (e) => {
@@ -45,11 +44,14 @@ const OtpLogin = ({ onLogin }) => {
 
     try {
       // Call API to Generate opt
-      const response = await fetch("http://localhost:5000/api/user/send-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ [type]: inputValue }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_MY_DOMAIN_IP}/api/user/send-otp`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ [type]: inputValue }),
+        },
+      );
 
       const data = await response.json();
 
@@ -66,7 +68,6 @@ const OtpLogin = ({ onLogin }) => {
     }
   };
 
-
   // Verify OTP
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
@@ -79,31 +80,29 @@ const OtpLogin = ({ onLogin }) => {
     try {
       // Call API to verify OTP
 
-      const response = await fetch("http://localhost:5000/api/user/verify-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ inputValue, otp }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_MY_DOMAIN_IP}/api/user/verify-otp`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ inputValue, otp }),
+        },
+      );
 
       const data = await response.json();
-
 
       if (response.ok) {
         setIsValidToken(true);
         setUserId(data.user.userId);
 
-        localStorage.setItem('token', data.token);
+        localStorage.setItem("token", data.token);
         alert("OTP Verified Successfully!");
         if (onLogin) onLogin(data.token);
 
         navigate("/user-dashboard");
-
       } else {
-        setError(data.message || 'Invalid credentials');
+        setError(data.message || "Invalid credentials");
       }
-
-
-
     } catch (error) {
       setError("Network error. Please try again.");
     }
@@ -126,7 +125,10 @@ const OtpLogin = ({ onLogin }) => {
           <p>Enter your Email or Mobile number to receive OTP</p>
         </div>
 
-        <form className={style["login-form"]} onSubmit={otpSent ? handleVerifyOtp : handleSendOtp}>
+        <form
+          className={style["login-form"]}
+          onSubmit={otpSent ? handleVerifyOtp : handleSendOtp}
+        >
           {error && <div className={style["error-message"]}>{error}</div>}
 
           <div className={style["form-group"]}>
