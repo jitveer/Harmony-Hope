@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "start": "node --experimental-require-module server.js",
+    "dev": "node --experimental-require-module server.js"
   },
   "keywords": [],
   "author": "",
