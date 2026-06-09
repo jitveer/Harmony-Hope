@@ -1,7 +1,14 @@
 import React, { useEffect } from "react";
 import styles from "./AboutUs.module.css";
+import { useNavigate } from "react-router-dom";
+import { useUserTokenValidation } from "../../Components/UserTokenVerification/UserTokenVerification";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function AboutUs() {
+  const { isValidToken } = useUserTokenValidation();
+  const navigate = useNavigate();
+
   useEffect(() => {
     // Scroll-triggered fade-in animations
     const sections = document.querySelectorAll(`.${styles.fadeInSection}`);
@@ -14,11 +21,24 @@ function AboutUs() {
           }
         });
       },
-      { threshold: 0.2 }
+      { threshold: 0.1 }
     );
 
     sections.forEach((section) => observer.observe(section));
   }, []);
+
+  const handleDonateClick = () => {
+    if (isValidToken) {
+      navigate('/donate');
+    } else {
+      toast.info("Please Login First to see your dashboard / donate.");
+      navigate('/login');
+    }
+  };
+
+  const handleHomeClick = () => {
+    navigate('/');
+  };
 
   return (
     <div className={styles.aboutWrapper}>
@@ -29,7 +49,7 @@ function AboutUs() {
             Welcome to <span className={styles.primaryText}>Harmony Hope</span>
           </h1>
           <p className={styles.heroSubtitle}>
-            A platform where generosity meets need. Together, we create a culture of care, 
+            A platform where generosity meets need. Together, we create a culture of care,
             compassion, and collective responsibility.
           </p>
         </div>
@@ -38,11 +58,12 @@ function AboutUs() {
       {/* Mission Section */}
       <section className={`${styles.missionSection} ${styles.fadeInSection}`}>
         <div className={styles.missionContainer}>
+          <div className={styles.missionIcon}><i className="ri-double-quotes-l"></i></div>
           <h2 className={styles.sectionTitle}>Our Mission</h2>
           <p className={styles.sectionDesc}>
-            At Harmony Hope, we believe that no one should face life's challenges alone. 
-            Our mission is to bring employees and well-wishers together to support colleagues 
-            during medical emergencies, education needs, and family crises — turning 
+            At Harmony Hope, we believe that no one should face life's challenges alone.
+            Our mission is to bring employees and well-wishers together to support colleagues
+            during medical emergencies, education needs, and family crises — turning
             compassion into meaningful action.
           </p>
         </div>
@@ -102,19 +123,25 @@ function AboutUs() {
         <h2 className={styles.sectionTitle}>Meet Our Volunteer Committee</h2>
         <div className={styles.teamGrid}>
           <div className={styles.teamCard}>
-            <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Priya Sharma" />
-            <h4>Priya Sharma</h4>
-            <p>Program Coordinator</p>
+            <div className={styles.avatarWrapper}>
+              <img src="https://mnmreality.com/wp-content/uploads/2026/06/Mr.-Mannan-M.webp" alt="Mr. Mannan M" />
+            </div>
+            <h4>Mr. Mannan M</h4>
+            <p>CHAIRMAN AND MANAGING DIRECTOR</p>
           </div>
           <div className={styles.teamCard}>
-            <img src="https://randomuser.me/api/portraits/men/30.jpg" alt="Rajesh Patel" />
-            <h4>Rajesh Patel</h4>
-            <p>Donor Relations</p>
+            <div className={styles.avatarWrapper}>
+              <img src="https://mnmenterprises.ltd/wp-content/uploads/2024/07/imgpsh_fullsize_anim-3-e1719809940864-300x286.jpg" alt="Mrs. Vanitha Mannan" />
+            </div>
+            <h4>Mrs. Vanitha Mannan</h4>
+            <p>MNM CFO, DIRECTOR</p>
           </div>
           <div className={styles.teamCard}>
-            <img src="https://randomuser.me/api/portraits/women/60.jpg" alt="Ananya Verma" />
-            <h4>Ananya Verma</h4>
-            <p>Community Outreach</p>
+            <div className={styles.avatarWrapper}>
+              <img src="https://mnmenterprises.ltd/wp-content/uploads/2025/07/jeeth-sir--300x300.webp" alt="Mr. Jeet Abraham" />
+            </div>
+            <h4>Mr. Jeet Abraham</h4>
+            <p>MNM VP OPERATION DIRECTOR</p>
           </div>
         </div>
       </section>
@@ -123,14 +150,15 @@ function AboutUs() {
       <section className={`${styles.ctaSection} ${styles.fadeInSection}`}>
         <h2 className={styles.ctaTitle}>Join the Movement</h2>
         <p className={styles.ctaDesc}>
-          Whether you want to donate, volunteer, or simply spread awareness — 
+          Whether you want to donate, volunteer, or simply spread awareness —
           every action counts in building a supportive community.
         </p>
         <div className={styles.ctaBtnRow}>
-          <button className={styles.ctaDonateBtn}><i className="ri-heart-fill"></i> Donate Now</button>
-          <button className={styles.ctaLearnBtn}><i className="ri-question-line"></i> Learn More</button>
+          <button className={styles.ctaDonateBtn} onClick={handleDonateClick}><i className="ri-heart-fill"></i> Donate Now</button>
+          <button className={styles.ctaLearnBtn} onClick={handleHomeClick}><i className="ri-question-line"></i> Learn More</button>
         </div>
       </section>
+      <ToastContainer />
     </div>
   );
 }

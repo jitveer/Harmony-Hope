@@ -17,7 +17,7 @@ export const UserTokenVerification = ({ children }) => {
         }
 
         try {
-            const res = await fetch("${import.meta.env.VITE_MY_DOMAIN_IP}/api/user/verify", {
+            const res = await fetch(`${import.meta.env.VITE_MY_DOMAIN_IP}/api/user/verify`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`,

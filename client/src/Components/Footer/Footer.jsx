@@ -47,22 +47,40 @@ const Footer = () => {
                                         Building a stronger, more supportive workplace community through collective care and compassion.
                                     </p>
                                     <div className={style["footer-social"]}>
-                                        <div className={style["social-icon"]}>
+                                        <a
+                                            href="https://www.facebook.com/yellowalldecor/"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={style["social-icon"]}
+                                            aria-label="Facebook"
+                                        >
                                             <i className="ri-facebook-fill text-lg"></i>
-                                        </div>
-                                        <div className={style["social-icon"]}>
-                                            <i className="ri-twitter-fill text-lg"></i>
-                                        </div>
-                                        <div className={style["social-icon"]}>
-                                            <i className="ri-linkedin-fill text-lg"></i>
-                                        </div>
+                                        </a>
+                                        <a
+                                            href="https://www.instagram.com/globesproperties/"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={style["social-icon"]}
+                                            aria-label="Instagram"
+                                        >
+                                            <i className="ri-instagram-line text-lg"></i>
+                                        </a>
+                                        <a
+                                            href="https://globesproperties.in/"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={style["social-icon"]}
+                                            aria-label="Website"
+                                        >
+                                            <i className="ri-global-line text-lg"></i>
+                                        </a>
                                     </div>
                                 </div>
                                 <div className={style["row1"]}>
                                     <h4 className={style["footer-links-title"]}>Quick Links</h4>
                                     <ul className={style["footer-links-list"]}>
                                         <li><a href="/about_us" className={style["footer-link"]}>How It Works</a></li>
-                                        <li><a href="/" className={style["footer-link"]}>Success Stories</a></li>
+                                        {/* <li><a href="/" className={style["footer-link"]}>Success Stories</a></li> */}
                                         <li><a href="/" className={style["footer-link"]}>Guidelines</a></li>
                                         <li><a href="/about_us" className={style["footer-link"]}>FAQ</a></li>
                                     </ul>

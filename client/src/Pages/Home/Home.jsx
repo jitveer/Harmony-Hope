@@ -3,19 +3,31 @@ import styles from "./Home.module.css";
 import { useNavigate } from "react-router-dom";
 import { useUserTokenValidation } from "../../Components/UserTokenVerification/UserTokenVerification";
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Home() {
 
-    const { isValidToken, userId, setIsValidToken, setUserId } = useUserTokenValidation();
+    const { isValidToken } = useUserTokenValidation();
 
     const navigator = useNavigate();
 
     function navigating() {
-        isValidToken ? navigator('/donate') : navigator('/login')(toast.info("Please Login First to see your notification."));
+        if (isValidToken) {
+            navigator('/donate');
+        } else {
+            toast.info("Please Login First to see your dashboard / donate.");
+            navigator('/login');
+        }
     }
 
-
-
+    const handleRequestHelp = () => {
+        if (isValidToken) {
+            navigator('/request');
+        } else {
+            toast.info("Please Login First to request help.");
+            navigator('/login');
+        }
+    };
 
     useEffect(() => {
         // Hero animations
@@ -121,7 +133,7 @@ function Home() {
                                         <div className={styles.btnIcon}><i className="ri-heart-fill"></i></div>
                                         Donate Now
                                     </button>
-                                    <button className={styles.requestBtn} onClick={() => { isValidToken ? navigator('/request') : navigator('/login')(toast.info("Please Login First to see your notification.")) }}>
+                                    <button className={styles.requestBtn} onClick={handleRequestHelp}>
                                         <div className={styles.btnIcon}><i className="ri-hand-heart-line"></i></div>
                                         Request Help
                                     </button>
@@ -187,52 +199,7 @@ function Home() {
                     </div>
                 </section>
 
-                <section className={styles.successStoriesSection}>
-                    <div className={styles.sectionContainer}>
-                        <div className={styles.successStoriesGrid}>
-                            <div>
-                                <h2 className={styles.sectionTitle}>Recent Success Stories</h2>
-                                <p className={styles.successStoriesDesc}>
-                                    See how our community has come together to support colleagues in their time of need
-                                </p>
-                                <div className={styles.successStoriesList}>
-                                    <div className={styles.successStoryCard}>
-                                        <div className={styles.successStoryCardFlex}>
-                                            <div className={styles.successStoryIcon1}><i className="ri-hospital-line"></i></div>
-                                            <div>
-                                                <h4 className={styles.successStoryTitle}>Medical Emergency Support</h4>
-                                                <p className={styles.successStoryDesc}>
-                                                    Priya from Marketing received ₹85,000 for her mother's surgery from 42 colleagues
-                                                </p>
-                                                <div className={styles.successStoryStatus1}><div className={styles.successStoryStatusIcon}><i className="ri-check-line"></i></div>Completed in 3 days</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className={styles.successStoryCard}>
-                                        <div className={styles.successStoryCardFlex}>
-                                            <div className={styles.successStoryIcon2}><i className="ri-graduation-cap-line"></i></div>
-                                            <div>
-                                                <h4 className={styles.successStoryTitle}>Education Fund</h4>
-                                                <p className={styles.successStoryDesc}>
-                                                    Rajesh from IT received ₹45,000 for his daughter's engineering college fees
-                                                </p>
-                                                <div className={styles.successStoryStatus2}><div className={styles.successStoryStatusIcon}><i className="ri-check-line"></i></div>Funded by 28 contributors</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={styles.successStoriesImgCol}>
-                                <img
-                                    src="https://readdy.ai/api/search-image?query=Professional%20diverse%20Indian%20office%20team%20celebrating%20together%20in%20modern%20workplace%20showing%20unity%20support%20and%20teamwork%20warm%20lighting%20contemporary%20office%20environment%20people%20smiling%20and%20supporting%20each%20other%20clean%20modern%20photography%20style%20high%20quality%20corporate%20culture&width=600&height=400&seq=success-stories-1&orientation=landscape"
-                                    alt="Team celebrating success"
-                                    className={styles.successStoriesImg}
-                                />
-                                <div className={styles.successStoriesImgOverlay}></div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+
 
                 <section className={styles.supportCategoriesSection}>
                     <div className={styles.sectionContainer}>
@@ -286,7 +253,7 @@ function Home() {
                             Join thousands of colleagues who believe in the power of community support. Every contribution, no matter the size, creates ripples of positive change.
                         </p>
                         <div className={styles.ctaBtnRow}>
-                            <button className={styles.ctaDonateBtn} onClick={() => { isValidToken ? navigator('/donate') : navigator('/login')(toast.info("Please Login First to see your notification.")) }}>
+                            <button className={styles.ctaDonateBtn} onClick={navigating}>
                                 <div className={styles.btnIcon}><i className="ri-heart-fill"></i></div>
                                 Start Donating
                             </button>
@@ -315,7 +282,7 @@ function Home() {
                         </div>
                     </div>
                 </section>
-
+                <ToastContainer />
             </div>
         </>
     )

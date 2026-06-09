@@ -41,6 +41,27 @@ const UserDashboard = () => {
 
   // FETCH REQUESTS + CHECK USER ROLE
   useEffect(() => {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    let decodedUser;
+    try {
+      decodedUser = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+      if (decodedUser.exp && decodedUser.exp < currentTime) {
+        localStorage.removeItem("token");
+        navigate("/login");
+        return;
+      }
+    } catch (error) {
+      console.error("Invalid token:", error);
+      localStorage.removeItem("token");
+      navigate("/login");
+      return;
+    }
+
     const fetchRequests = async () => {
       try {
         const res = await fetch(
@@ -63,20 +84,19 @@ const UserDashboard = () => {
       }
     };
 
-    const checkPathByRole = async () => {
-      const decodedUser = await jwtDecode(token);
+    const checkPathByRole = () => {
       if (decodedUser.role === "user") {
-        navigate("/user-dashboard");
+        // Already on user-dashboard
       } else if (decodedUser.role === "admin") {
         navigate("/admin-dashboard");
       } else {
-        navigate("/");
+        navigate("/login");
       }
     };
 
     fetchRequests();
     checkPathByRole();
-  }, []);
+  }, [token, navigate]);
 
   // CALCULATED DASHBOARD STATS (Dynamic Data)
 

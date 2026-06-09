@@ -140,9 +140,30 @@ const AdminDashboard = () => {
   };
 
   useEffect(() => {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    let decodedUser;
+    try {
+      decodedUser = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+      if (decodedUser.exp && decodedUser.exp < currentTime) {
+        localStorage.removeItem("token");
+        navigate("/login");
+        return;
+      }
+    } catch (error) {
+      console.error("Invalid token:", error);
+      localStorage.removeItem("token");
+      navigate("/login");
+      return;
+    }
+
     const fetchAllUserRequest = async () => {
       try {
-        const res = await fetch("${import.meta.env.VITE_MY_DOMAIN_IP}/api/requests/admin", {
+        const res = await fetch(`${import.meta.env.VITE_MY_DOMAIN_IP}/api/requests/admin`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -161,17 +182,12 @@ const AdminDashboard = () => {
     };
 
     const checkPathByRole = () => {
-      if (!token) {
-        navigate("/");
-        return;
-      }
-      const decodedUser = jwtDecode(token);
       if (decodedUser.role === "user") {
         navigate("/user-dashboard");
       } else if (decodedUser.role === "admin") {
-        navigate("/admin-dashboard");
+        // Already on admin-dashboard
       } else {
-        navigate("/");
+        navigate("/login");
       }
     };
 

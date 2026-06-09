@@ -19,8 +19,7 @@ import OtpLogin from './Pages/OtpLogin/OtpLogin';
 import Notifications from './Pages/Notifications/Notifications';
 import AboutUs from './Pages/AboutUs/AboutUs';
 import ContactUs from './Pages/ContactUs/ContactUs';
-
-
+import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute';
 
 const App = () => {
     return (
@@ -33,12 +32,47 @@ const App = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/otp-login" element={<OtpLogin />} />
 
-                <Route path="/user-dashboard" element={<UserDashboard />} />
-                <Route path="/user-profile" element={<UserProfile />} />
-                <Route path="/donate" element={<Donate />} />
-                <Route path="/notifications" element={<Notifications />} />
+                <Route 
+                    path="/user-dashboard" 
+                    element={
+                        <ProtectedRoute allowedRoles={["user"]}>
+                            <UserDashboard />
+                        </ProtectedRoute>
+                    } 
+                />
+                <Route 
+                    path="/user-profile" 
+                    element={
+                        <ProtectedRoute allowedRoles={["user"]}>
+                            <UserProfile />
+                        </ProtectedRoute>
+                    } 
+                />
+                <Route 
+                    path="/donate" 
+                    element={
+                        <ProtectedRoute allowedRoles={["user"]}>
+                            <Donate />
+                        </ProtectedRoute>
+                    } 
+                />
+                <Route 
+                    path="/notifications" 
+                    element={
+                        <ProtectedRoute allowedRoles={["user"]}>
+                            <Notifications />
+                        </ProtectedRoute>
+                    } 
+                />
 
-                <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                <Route 
+                    path="/admin-dashboard" 
+                    element={
+                        <ProtectedRoute allowedRoles={["admin"]}>
+                            <AdminDashboard />
+                        </ProtectedRoute>
+                    } 
+                />
                 {/* <Route path="/admin-login" element={<AdminLogin />} /> */}
 
                 <Route path="/about_us" element={<AboutUs />} />
@@ -46,7 +80,14 @@ const App = () => {
                 <Route path="/term_condition" element={<TermAndCondition />} />
                 <Route path="/privacypolicy" element={<PrivacyPolicy />} />
 
-                <Route path="/request" element={<Request />} />
+                <Route 
+                    path="/request" 
+                    element={
+                        <ProtectedRoute allowedRoles={["user"]}>
+                            <Request />
+                        </ProtectedRoute>
+                    } 
+                />
                 <Route path="*" element={<NoPage />} />
             </Routes>
             <Footer />
