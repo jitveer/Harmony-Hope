@@ -112,7 +112,6 @@ router.post("/register", async (req, res) => {
 
 
 
-
 // ================== VERIFY OTP ( Create User) ==================
 router.post("/verify-otp", async (req, res) => {
   const { email, otp } = req.body;

@@ -118,7 +118,7 @@ function Register() {
       }
     };
 
-    const checkButton = () => {};
+    const checkButton = () => { };
 
     checkToken();
     checkButton();
