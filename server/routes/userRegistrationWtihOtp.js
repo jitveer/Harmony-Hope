@@ -93,9 +93,10 @@ router.post("/register", async (req, res) => {
       role: role || "user", // if not provided, set default role "user"
     });
 
+
     // SEND MAIL
     await transporter.sendMail({
-      from: "support@harmonyhope.charity",
+      from: "support@harmonyhopefoundation.com",
       to: email,
       subject: "HarmonyHope OTP Verification",
       html: `<p>Your OTP is <b>${otpCode}</b>. It is valid for 10 minutes.</p>`,
@@ -107,6 +108,10 @@ router.post("/register", async (req, res) => {
     res.status(500).json({ message: "Something went wrong backend" });
   }
 });
+
+
+
+
 
 // ================== VERIFY OTP ( Create User) ==================
 router.post("/verify-otp", async (req, res) => {
