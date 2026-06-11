@@ -102,7 +102,8 @@ router.post("/register", async (req, res) => {
       html: `<p>Your OTP is <b>${otpCode}</b>. It is valid for 10 minutes.</p>`,
     });
 
-    res.json({ message: "OTP sent successfully to your email." });
+    res.json({ message: "OTP sent successfully to your email.", email });
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Something went wrong backend" });
