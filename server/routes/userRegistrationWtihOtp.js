@@ -95,12 +95,13 @@ router.post("/register", async (req, res) => {
 
 
     // SEND MAIL
-    await transporter.sendMail({
+    const mailResponse = await transporter.sendMail({
       from: "support@harmonyhopefoundation.com",
       to: email,
       subject: "HarmonyHope OTP Verification",
       html: `<p>Your OTP is <b>${otpCode}</b>. It is valid for 10 minutes.</p>`,
     });
+    console.log("Email sent successfully. Response:", mailResponse);
 
     res.json({ message: "OTP sent successfully to your email.", email });
 
