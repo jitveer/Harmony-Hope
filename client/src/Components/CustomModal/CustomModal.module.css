@@ -1,0 +1,249 @@
+/* Modal Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 16px;
+  box-sizing: border-box;
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+/* Modal Card with premium look */
+.modalCard {
+  border-radius: 20px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+  padding: 28px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(16px);
+  transition: all 0.3s ease;
+  animation: scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Theme styling based on modal type */
+
+/* Success Theme (Light Green) */
+.success {
+  background: rgba(240, 253, 250, 0.95);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+.success .title {
+  color: #065f46;
+}
+.success .message {
+  color: #047857;
+}
+
+/* Error/Alert Theme (Light Red) */
+.error {
+  background: rgba(254, 242, 242, 0.95);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+.error .title {
+  color: #991b1b;
+}
+.error .message {
+  color: #b91c1c;
+}
+
+/* Warning Theme (Light Yellow) */
+.warning {
+  background: rgba(255, 251, 235, 0.95);
+  border-color: rgba(245, 158, 11, 0.2);
+}
+.warning .title {
+  color: #92400e;
+}
+.warning .message {
+  color: #b45309;
+}
+
+/* Info Theme (Light Blue) */
+.info {
+  background: rgba(239, 246, 255, 0.95);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+.info .title {
+  color: #1e40af;
+}
+.info .message {
+  color: #1d4ed8;
+}
+
+/* Confirm Theme (Light Violet/Indigo) */
+.confirm {
+  background: rgba(245, 243, 255, 0.95);
+  border-color: rgba(99, 102, 241, 0.2);
+}
+.confirm .title {
+  color: #3730a3;
+}
+.confirm .message {
+  color: #4f46e5;
+}
+
+/* Icons styling */
+.icon {
+  font-size: 52px;
+  margin-bottom: 16px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.06));
+}
+
+.successIcon {
+  color: #10b981;
+}
+
+.errorIcon {
+  color: #ef4444;
+}
+
+.warningIcon {
+  color: #f59e0b;
+}
+
+.infoIcon {
+  color: #3b82f6;
+}
+
+.confirmIcon {
+  color: #6366f1;
+}
+
+/* Header Text */
+.title {
+  font-family: 'Outfit', 'Inter', sans-serif;
+  font-size: 22px;
+  font-weight: 750;
+  margin: 0;
+  text-transform: capitalize;
+  letter-spacing: -0.02em;
+}
+
+/* Body Text */
+.body {
+  margin: 12px 0 24px 0;
+  width: 100%;
+}
+
+.message {
+  font-family: 'Inter', sans-serif;
+  font-size: 14.5px;
+  font-weight: 500;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Button Layout */
+.footer {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  justify-content: center;
+}
+
+/* Reusable buttons */
+.btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  flex: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+.okBtn {
+  background-color: #0f172a;
+  color: #ffffff;
+  width: 100%;
+}
+
+.okBtn:hover {
+  background-color: #1e293b;
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.15);
+}
+
+.cancelBtn {
+  background-color: rgba(15, 23, 42, 0.06);
+  color: #475569;
+}
+
+.cancelBtn:hover {
+  background-color: rgba(15, 23, 42, 0.12);
+}
+
+.confirmBtn {
+  background-color: #6366f1;
+  color: #ffffff;
+}
+
+.confirmBtn:hover {
+  background-color: #4f46e5;
+  box-shadow: 0 8px 16px rgba(99, 102, 241, 0.25);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Responsive adjustments for smaller devices */
+@media (max-width: 480px) {
+  .modalCard {
+    padding: 24px 20px;
+    max-width: 100%;
+  }
+
+  .icon {
+    font-size: 46px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .message {
+    font-size: 14px;
+  }
+
+  .btn {
+    padding: 10px 16px;
+    font-size: 13.5px;
+  }
+}

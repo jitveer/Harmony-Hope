@@ -240,7 +240,7 @@ router.post("/verify-otp", otpRateLimiter, async (req, res) => {
         user.otpExpires = null;
         responseMessage = "Too many wrong attempts for this OTP. It has been invalidated. Please request a new OTP.";
       } else {
-        responseMessage = `Incorrect OTP. You have ${3 - user.otpAttempts} attempts remaining for this OTP.`;
+        responseMessage = `Incorrect OTP. Please try again. You have ${3 - user.otpAttempts} attempts remaining for this OTP.`;
       }
 
       await user.save();

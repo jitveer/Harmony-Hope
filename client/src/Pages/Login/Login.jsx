@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 // import './Login.css';
 import { useUserTokenValidation } from "../../Components/UserTokenVerification/UserTokenVerification";
+import { useModal } from "../../Context/ModalContext";
 
 const Login = ({ onLogin }) => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const Login = ({ onLogin }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [paswrdEye, setPaswrdEye] = useState(true);
   const { setIsValidToken, setUserId } = useUserTokenValidation();
+  const { showAlert } = useModal();
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -45,10 +47,16 @@ const Login = ({ onLogin }) => {
         setIsValidToken(true);
         setUserId(data.user.userId);
         localStorage.setItem("token", data.token);
-        alert("Successful login");
-        if (onLogin) onLogin(data.token);
-        if (data.user.role === "admin") navigate("/admin-dashboard");
-        else navigate("/user-dashboard");
+        showAlert({
+          type: "success",
+          title: "Login Successful",
+          message: "Welcome back! You have successfully logged in.",
+          onConfirm: () => {
+            if (onLogin) onLogin(data.token);
+            if (data.user.role === "admin") navigate("/admin-dashboard");
+            else navigate("/user-dashboard");
+          }
+        });
       } else {
         setError(data.message || "Invalid credentials");
       }

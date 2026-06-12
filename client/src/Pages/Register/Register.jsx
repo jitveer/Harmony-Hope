@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styles from "./Register.module.css";
 import { useUserTokenValidation } from "../../Components/UserTokenVerification/UserTokenVerification";
-// import ReCAPTCHA from "react-google-recaptcha";
+import { useModal } from "../../Context/ModalContext";
 
 function Register() {
   const [register, setRegister] = useState({
@@ -17,6 +17,9 @@ function Register() {
   const [paswrdEye, setPaswrdEye] = useState(true);
   const { userId, isValidToken, setUserId, setIsValidToken } =
     useUserTokenValidation();
+
+  // Consume Global Modal Hook
+  const { showAlert } = useModal();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,38 +44,49 @@ function Register() {
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
 
     if (!nameRegex.test(name)) {
-      alert("Name must be 3-20 letters only (no numbers or special chars)");
+      showAlert({
+        type: "warning",
+        title: "Validation Error",
+        message: "Name must be 3-20 letters only (no numbers or special chars).",
+      });
       return;
     }
 
     if (!emailRegex.test(email)) {
-      alert("Please enter a valid email address.");
+      showAlert({
+        type: "warning",
+        title: "Validation Error",
+        message: "Please enter a valid email address.",
+      });
       return;
     }
 
     if (!phoneRegex.test(phone)) {
-      alert("Phone must be a valid 10-digit Indian number)");
+      showAlert({
+        type: "warning",
+        title: "Validation Error",
+        message: "Phone must be a valid 10-digit Indian number.",
+      });
       return;
     }
 
     if (!passwordRegex.test(password)) {
-      alert(
-        "Password must be 8–20 chars, with at least 1 uppercase, 1 lowercase, 1 digit, and 1 special character.)",
-      );
+      showAlert({
+        type: "warning",
+        title: "Validation Error",
+        message: "Password must be 8–20 chars, with at least 1 uppercase, 1 lowercase, 1 digit, and 1 special character.",
+      });
       return;
     }
 
     if (!name || !email || !phone || !password) {
-      alert("Please fill all fields");
+      showAlert({
+        type: "warning",
+        title: "Validation Error",
+        message: "Please fill in all fields.",
+      });
       return;
     }
-
-    // if (!captchaValue) {
-    //     alert("Please verify the captcha!");
-    //     return;
-    // }
-
-    /////////////////////////////
 
     try {
       const response = await fetch(
@@ -89,18 +103,30 @@ function Register() {
       const data = await response.json();
 
       if (response.ok) {
-        // console.log("Registration successful:", data);
-
         setIsValidToken(true);
-        alert(data.message);
-        navigate("/verify-otp", { state: { email: email } });
+        showAlert({
+          type: "success",
+          title: "Registration Success",
+          message: data.message || "OTP has been sent to your email address.",
+          onConfirm: () => {
+            navigate("/verify-otp", { state: { email: email } });
+          },
+        });
       } else {
         console.error("Error:", data);
-        alert(data.message || "Registration failed.");
+        showAlert({
+          type: "error",
+          title: "Registration Failed",
+          message: data.message || "Registration failed.",
+        });
       }
     } catch (error) {
       console.error("Fetch error:", error);
-      alert("Something went wrong.");
+      showAlert({
+        type: "error",
+        title: "Error",
+        message: "Something went wrong. Please check your network connection.",
+      });
     }
   };
 
@@ -128,30 +154,6 @@ function Register() {
     <>
       <div className={styles["register-container"]}>
         <div className={styles["register-card"]}>
-          {/* 👇 Profile Image Section */}
-          {/* <div style={{ textAlign: "center", marginBottom: "20px" }}>
-                        <img
-                            src={previewUrl}
-                            alt="Profile"
-                            style={{
-                                width: "100px",
-                                height: "100px",
-                                borderRadius: "50%",
-                                objectFit: "cover",
-                                border: "2px solid #ddd",
-                                cursor: "pointer"
-                            }}
-                            onClick={() => fileInputRef.current.click()} // image click to open file chooser
-                        />
-                        <input
-                            type="file"
-                            accept="image/*"
-                            ref={fileInputRef}
-                            style={{ display: "none" }}
-                            onChange={handleFileChange}
-                        />
-                        <p style={{ fontSize: "14px", color: "#666" }}>Click on image to choose profile</p>
-                    </div> */}
           <div className={styles["register-header"]}>
             <h1>Join Our Caring Community</h1>
             <p>Make a difference by connecting with those in need</p>
@@ -243,7 +245,6 @@ function Register() {
                   tabIndex="-1"
                   aria-label="Show password"
                 >
-                  {/* Eye Icon SVG */}
                   <div className={styles["eye"]} onClick={showPassword}>
                     {paswrdEye ? (
                       <svg

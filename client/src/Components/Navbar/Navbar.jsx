@@ -166,16 +166,19 @@ function Navbar() {
                             <div className={`${style["navbar-icon"]} ${style["navbar-profile-icon"]}`} onClick={checkUserProfile} >
                                 {
                                     isValidToken ? (
-                                        <div className={style["profile-icon-container"]}>
-                                            <div onClick={checkUserProfile}><i className="ri-user-line"></i></div>
-                                            {/* <span>{capitalizeFirstWord(userName)}</span> */}
-                                            <button onClick={logOut}>Log Out</button>
+                                        <div className={style["profile-icon-container"]} onClick={(e) => e.stopPropagation()}>
+                                            <div onClick={checkUserProfile} className={style["profile-avatar-btn"]}>
+                                                <i className="ri-user-line"></i>
+                                            </div>
+                                            <button onClick={(e) => { e.stopPropagation(); logOut(); }} className={style["logout-btn"]}>
+                                                <FaSignOutAlt /> Log Out
+                                            </button>
                                         </div>
 
                                     ) : (
-                                        <>
+                                        <div onClick={(e) => e.stopPropagation()}>
                                             <Link to="/"><i className="ri-user-line"></i></Link>
-                                        </>
+                                        </div>
                                     )
                                 }
                             </div>

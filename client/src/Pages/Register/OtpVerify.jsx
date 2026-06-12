@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "./OtpVerify.module.css";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useUserTokenValidation } from "../../Components/UserTokenVerification/UserTokenVerification";
+import { useModal } from "../../Context/ModalContext";
 
 const OtpVerify = () => {
   const location = useLocation();
@@ -14,6 +15,9 @@ const OtpVerify = () => {
   const inputsRef = useRef([]);
   const { isValidToken, userId, setIsValidToken, setUserId } =
     useUserTokenValidation();
+
+  // Consume Global Modal Context Hook
+  const { showAlert } = useModal();
 
   useEffect(() => {
     if (timer > 0) {
@@ -44,12 +48,11 @@ const OtpVerify = () => {
     }
   };
 
-  const handleResend = async () => {
+  const executeResend = async () => {
     setOtp(Array(6).fill(""));
     setTimer(60);
     setResendVisible(false);
     inputsRef.current[0]?.focus();
-    // API call to resend OTP
     try {
       const res = await fetch(
         `${import.meta.env.VITE_MY_DOMAIN_IP}/api/auth/resend-otp`,
@@ -67,22 +70,42 @@ const OtpVerify = () => {
       const data = await res.json();
 
       if (res.ok) {
-        alert("OTP has been resent successfully to your email!");
+        showAlert({
+          type: "success",
+          title: "OTP Resent",
+          message: "OTP has been resent successfully to your email!",
+        });
       } else {
-        alert(data.message || "Failed to resend OTP");
+        showAlert({
+          type: "error",
+          title: "Error",
+          message: data.message || "Failed to resend OTP",
+        });
         console.error("OTP Resend Failed:", data.message);
       }
     } catch (err) {
       console.error("Error resending OTP:", err);
-      alert("Something went wrong while resending OTP. Please try again.");
+      showAlert({
+        type: "error",
+        title: "Error",
+        message: "Something went wrong while resending OTP. Please try again.",
+      });
     }
+  };
+
+  const handleResend = () => {
+    showAlert({
+      type: "confirm",
+      title: "Resend OTP",
+      message: "Do you want to resend OTP?",
+      onConfirm: executeResend,
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const otpCode = otp.join("");
     console.log("Entered OTP:", otp);
-    // Call backend to verify this OTP
 
     try {
       const res = await fetch(
@@ -104,15 +127,31 @@ const OtpVerify = () => {
       if (res.ok) {
         setUserId(data.user.userId);
         setIsValidToken(true);
-
-        alert("You are succesfully register");
         localStorage.setItem("token", data.token);
-        navigation("/user-dashboard", { state: { email: email } });
+
+        showAlert({
+          type: "success",
+          title: "Verification Successful",
+          message: "You are successfully registered!",
+          onConfirm: () => {
+            navigation("/user-dashboard", { state: { email: email } });
+          },
+        });
       } else {
+        showAlert({
+          type: "error",
+          title: "Verification Failed",
+          message: data.message || "OTP Verification Failed. Please try again.",
+        });
         console.error("OTP Verification Failed:", data.message);
       }
     } catch (err) {
       console.error("Error verifying OTP:", err);
+      showAlert({
+        type: "error",
+        title: "Error",
+        message: "Network error. Please try again later.",
+      });
     }
   };
 

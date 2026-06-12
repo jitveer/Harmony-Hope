@@ -5,6 +5,7 @@ import App from './App.jsx'
 import { BrowserRouter } from "react-router-dom";
 import { UserTokenVerification } from './Components/UserTokenVerification/UserTokenVerification.jsx';
 import ScrollToTop from "./Components/ScrollToTop/ScrollToTop";
+import { ModalProvider } from './Context/ModalContext.jsx';
 
 
 
@@ -23,13 +24,16 @@ if ("serviceWorker" in navigator) {
 
 
 
+
 createRoot(document.getElementById('root')).render(
 
   <BrowserRouter>
     <ScrollToTop />
-    <UserTokenVerification>
-      <App />
-    </UserTokenVerification>
+    <ModalProvider>
+      <UserTokenVerification>
+        <App />
+      </UserTokenVerification>
+    </ModalProvider>
   </BrowserRouter>
 
 )
