@@ -12,6 +12,16 @@ const userSchema = new mongoose.Schema({
     },
     isVerified: { type: Boolean, default: false },
 
+    // OTP and Lock System Fields
+    otp: { type: String, default: null },
+    otpExpires: { type: Date, default: null },
+    otpAttempts: { type: Number, default: 0 },
+    otpSendCount: { type: Number, default: 0 },
+    otpWindowStart: { type: Date, default: null },
+    failedAttempts: { type: Number, default: 0 },
+    lockUntil: { type: Date, default: null },
+    lockLevel: { type: Number, default: 0 },
+
     profileImage: {
         type: String,
         required: false,

@@ -4,6 +4,7 @@ import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from "react-router-dom";
 import { UserTokenVerification } from './Components/UserTokenVerification/UserTokenVerification.jsx';
+import ScrollToTop from "./Components/ScrollToTop/ScrollToTop";
 
 
 
@@ -22,13 +23,13 @@ if ("serviceWorker" in navigator) {
 
 
 
-
 createRoot(document.getElementById('root')).render(
 
-  <UserTokenVerification>
-    <BrowserRouter>
+  <BrowserRouter>
+    <ScrollToTop />
+    <UserTokenVerification>
       <App />
-    </BrowserRouter>
-  </UserTokenVerification>
+    </UserTokenVerification>
+  </BrowserRouter>
 
 )

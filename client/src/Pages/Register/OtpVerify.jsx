@@ -49,10 +49,10 @@ const OtpVerify = () => {
     setTimer(60);
     setResendVisible(false);
     inputsRef.current[0]?.focus();
-    //API call to resend OTP
+    // API call to resend OTP
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_MY_DOMAIN_IP}/api/auth/verify-otp`,
+        `${import.meta.env.VITE_MY_DOMAIN_IP}/api/auth/resend-otp`,
         {
           method: "POST",
           headers: {
@@ -60,7 +60,6 @@ const OtpVerify = () => {
           },
           body: JSON.stringify({
             email: email,
-            otp: otpCode,
           }),
         },
       );
@@ -68,17 +67,14 @@ const OtpVerify = () => {
       const data = await res.json();
 
       if (res.ok) {
-        setIsValidToken(true);
-        setUserId(data.user.userId);
-        console.log(" OTP Verified Successfully: ", data);
-        alert("You are succesfully register");
-        localStorage.setItem("token", data.token);
-        navigation("/user-dashboard", { state: { email: email } });
+        alert("OTP has been resent successfully to your email!");
       } else {
-        console.error("OTP Verification Failed:", data.message);
+        alert(data.message || "Failed to resend OTP");
+        console.error("OTP Resend Failed:", data.message);
       }
     } catch (err) {
-      console.error("Error verifying OTP:", err);
+      console.error("Error resending OTP:", err);
+      alert("Something went wrong while resending OTP. Please try again.");
     }
   };
 
