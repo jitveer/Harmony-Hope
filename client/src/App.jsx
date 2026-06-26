@@ -12,7 +12,7 @@ import UserProfile from './Pages/UserProfile/UserProfile';
 import Donate from './Pages/Donate/Donate';
 import Request from './Pages/Request/Request';
 import AdminDashboard from './Pages/AdminDashboard/AdminDashboard';
-// import AdminLogin from './Pages/Login/AdminLogin';
+import AdminLogin from './Pages/Login/AdminLogin';
 import TermAndCondition from './Pages/TermCondition/TermAndCondition';
 import PrivacyPolicy from './Pages/PrivacyPolicy/PrivacyPolicy';
 import OtpLogin from './Pages/OtpLogin/OtpLogin';
@@ -32,61 +32,61 @@ const App = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/otp-login" element={<OtpLogin />} />
 
-                <Route 
-                    path="/user-dashboard" 
+                <Route
+                    path="/user-dashboard"
                     element={
                         <ProtectedRoute allowedRoles={["user"]}>
                             <UserDashboard />
                         </ProtectedRoute>
-                    } 
+                    }
                 />
-                <Route 
-                    path="/user-profile" 
+                <Route
+                    path="/user-profile"
                     element={
                         <ProtectedRoute allowedRoles={["user"]}>
                             <UserProfile />
                         </ProtectedRoute>
-                    } 
+                    }
                 />
-                <Route 
-                    path="/donate" 
+                <Route
+                    path="/donate"
                     element={
                         <ProtectedRoute allowedRoles={["user"]}>
                             <Donate />
                         </ProtectedRoute>
-                    } 
+                    }
                 />
-                <Route 
-                    path="/notifications" 
+                <Route
+                    path="/notifications"
                     element={
                         <ProtectedRoute allowedRoles={["user"]}>
                             <Notifications />
                         </ProtectedRoute>
-                    } 
+                    }
                 />
 
-                <Route 
-                    path="/admin-dashboard" 
+                <Route
+                    path="/admin-dashboard"
                     element={
-                        <ProtectedRoute allowedRoles={["admin"]}>
+                        <ProtectedRoute allowedRoles={["admin", "superadmin"]}>
                             <AdminDashboard />
                         </ProtectedRoute>
-                    } 
+                    }
                 />
-                {/* <Route path="/admin-login" element={<AdminLogin />} /> */}
+                <Route path="/admin-login" element={<AdminLogin />} />
 
                 <Route path="/about_us" element={<AboutUs />} />
                 <Route path="/contact_us" element={<ContactUs />} />
                 <Route path="/term_condition" element={<TermAndCondition />} />
                 <Route path="/privacypolicy" element={<PrivacyPolicy />} />
 
-                <Route 
-                    path="/request" 
+                <Route
+                    path="/request"
                     element={
                         <ProtectedRoute allowedRoles={["user"]}>
                             <Request />
                         </ProtectedRoute>
-                    } 
+                    }
                 />
                 <Route path="*" element={<NoPage />} />
             </Routes>

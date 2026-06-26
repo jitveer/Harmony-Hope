@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Login.css";
+import styles from "./AdminLogin.module.css";
 import { useUserTokenValidation } from "../../Components/UserTokenVerification/UserTokenVerification";
 
 const AdminLogin = ({ onLogin }) => {
@@ -40,7 +40,7 @@ const AdminLogin = ({ onLogin }) => {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_MY_DOMAIN_IP}/api/user/login`,
+        `${import.meta.env.VITE_MY_DOMAIN_IP}/api/auth/admin-login`,
         {
           method: "POST",
           headers: {
@@ -56,16 +56,15 @@ const AdminLogin = ({ onLogin }) => {
       const data = await response.json();
 
       if (response.ok) {
-        // alert('Successful login', data.user._id);
+        // alert('Successful login', data.user.userId);
 
-        localStorage.setItem("userId", data.user._id);
-        setUserId(data.user._id);
-        setIsValidToken(True);
+        localStorage.setItem("token", data.token);
+        setUserId(data.user.userId);
+        setIsValidToken(true);
 
         console.log("Login submit hone par = ", isValidToken);
 
-        if (data.user.role === "admin") navigate("/admin-dashboard");
-        else navigate("/user-dashboard");
+        navigate("/admin-dashboard");
       } else {
         setError(data.message || "Invalid credentials");
       }
@@ -77,18 +76,18 @@ const AdminLogin = ({ onLogin }) => {
   };
 
   return (
-    <div className="adminLoginContainer">
-      <div className="login-card">
-        <div className="login-header">
+    <div className={styles.adminLoginContainer}>
+      <div className={styles.loginCard}>
+        <div className={styles.loginHeader}>
           <h1>HarmonyHope</h1>
           <p>Welcome back! Please sign in to your account.</p>
         </div>
 
-        <form className="login-form" onSubmit={handleSubmit}>
-          {error && <div className="error-message">{error}</div>}
-          {success && <div className="success-message">{success}</div>}
+        <form className={styles.loginForm} onSubmit={handleSubmit}>
+          {error && <div className={styles.errorMessage}>{error}</div>}
+          {success && <div className={styles.successMessage}>{success}</div>}
 
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label htmlFor="email">Email Address</label>
             <input
               id="email"
@@ -101,7 +100,7 @@ const AdminLogin = ({ onLogin }) => {
             />
           </div>
 
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label htmlFor="password">Password</label>
             <input
               id="password"
@@ -114,13 +113,13 @@ const AdminLogin = ({ onLogin }) => {
             />
           </div>
 
-          <button type="submit" className="login-button" disabled={isLoading}>
+          <button type="submit" className={styles.loginButton} disabled={isLoading}>
             {isLoading ? "Logging in..." : "Login"}
           </button>
         </form>
 
-        <div className="login-footer">
-          <div className="help-links">
+        <div className={styles.loginFooter}>
+          <div className={styles.helpLinks}>
             <a href="/forgot-password">Forgot Password?</a>
             <a href="/register">Don't have an account? Sign up</a>
           </div>

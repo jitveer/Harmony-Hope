@@ -1,12 +1,34 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import "./AdminDashboard.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import CustomModal from "../../Components/CustomModal/CustomModal";
+
 
 const AdminDashboard = () => {
   const [requests, setRequests] = useState([]);
+  const [donations, setDonations] = useState([]);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = searchParams.get("tab") || "dashboard";
+  const setActiveTab = (tab) => {
+    setSearchParams({ tab });
+  };
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const [modalConfig, setModalConfig] = useState({
+    isOpen: false,
+    type: "confirm",
+    title: "",
+    message: "",
+    onConfirm: () => { },
+    onCancel: () => { },
+  });
+
+  const totalDonationsAmount = useMemo(() => {
+    return donations.reduce((sum, d) => sum + (d.amount || 0), 0);
+  }, [donations]);
 
   // 🔹 State for filters
   const [filteredRequests, setFilteredRequests] = useState([]);
@@ -15,30 +37,55 @@ const AdminDashboard = () => {
   const [categoryFilter, setCategoryFilter] = useState("All Categories");
   const [dateFilter, setDateFilter] = useState("");
 
-  const handleApprove = async (status, id) => {
+  const handleApprove = (status, id) => {
+    setModalConfig({
+      isOpen: true,
+      type: "confirm",
+      title: "Confirm Action",
+      message: `Are you sure you want to ${status} this request?`,
+      onConfirm: async () => {
+        setModalConfig((prev) => ({ ...prev, isOpen: false }));
+        try {
+          const res = await fetch(`${import.meta.env.VITE_MY_DOMAIN_IP}/api/admin/status/${id}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ status }),
+          });
 
-    try {
-      const res = await fetch(`${import.meta.env.VITE_MY_DOMAIN_IP}/api/requests/status/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ status }),
-      });
+          const data = await res.json();
 
-      const data = await res.json();
-
-      if (res.ok) {
-        alert(data.message);
-        setRequests((prev) =>
-          prev.map((req) => (req._id === id ? data.request : req))
-        );
+          if (res.ok) {
+            setRequests((prev) =>
+              prev.map((req) => (req._id === id ? { ...req, status: data.request?.status || status } : req))
+            );
+          } else {
+            setModalConfig({
+              isOpen: true,
+              type: "error",
+              title: "Error",
+              message: data.message || "Failed to update request status.",
+              onConfirm: () => setModalConfig((prev) => ({ ...prev, isOpen: false }))
+            });
+          }
+        } catch (error) {
+          setModalConfig({
+            isOpen: true,
+            type: "error",
+            title: "Server Error",
+            message: "Something went wrong on the server.",
+            onConfirm: () => setModalConfig((prev) => ({ ...prev, isOpen: false }))
+          });
+        }
+      },
+      onCancel: () => {
+        setModalConfig((prev) => ({ ...prev, isOpen: false }));
       }
-    } catch (error) {
-      alert("Server error");
-    }
+    });
   };
+
 
   // 🔹 Export filtered table data as CSV
   const exportTableData = () => {
@@ -163,7 +210,7 @@ const AdminDashboard = () => {
 
     const fetchAllUserRequest = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_MY_DOMAIN_IP}/api/requests/admin`, {
+        const res = await fetch(`${import.meta.env.VITE_MY_DOMAIN_IP}/api/admin/admin`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -181,10 +228,30 @@ const AdminDashboard = () => {
       }
     };
 
+    const fetchAllDonations = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_MY_DOMAIN_IP}/api/admin/admin/donations`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          setDonations(data.donations || []);
+        }
+      } catch (error) {
+        console.error("Error fetching donations:", error);
+      }
+    };
+
     const checkPathByRole = () => {
       if (decodedUser.role === "user") {
         navigate("/user-dashboard");
-      } else if (decodedUser.role === "admin") {
+      } else if (decodedUser.role === "admin" || decodedUser.role === "superadmin") {
         // Already on admin-dashboard
       } else {
         navigate("/login");
@@ -192,194 +259,288 @@ const AdminDashboard = () => {
     };
 
     fetchAllUserRequest();
+    fetchAllDonations();
     checkPathByRole();
   }, [navigate, token]);
 
   return (
     <>
-      <div className="dashboardContainer">
-        <div className="rightSide">
-          <div className="tabContainer">
-            <div className="totalDonation top-cards">
-              <div className="textpart">
-                <p>Total Donations</p>
-                <h2>0</h2>
-                <p>12.5% vs last month</p>
-              </div>
-              <div className="logopart">
-                <i className="ri-money-dollar-circle-line logo "></i>
-              </div>
-            </div>
+      <div className="admin-layout">
+        {/* Toggle Hamburger Button for Mobile */}
+        <button className="sidebar-toggle" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+          <i className={isSidebarOpen ? "ri-close-line" : "ri-menu-line"}></i>
+        </button>
 
-            <div className="pendingRequests top-cards">
-              <div className="textpart">
-                <p>Pending Requests</p>
-                <h2>{requests.filter((r) => r.status === "pending").length}</h2>
-                <p>= new today</p>
-              </div>
-              <div className="logopart">
-                <i className="ri-time-line text-yellow-600 logo "></i>
-              </div>
-            </div>
-
-            <div className="approvedRequests top-cards">
-              <div className="textpart">
-                <p>Approved Requests</p>
-                <h2>
-                  {requests.filter((r) => r.status === "approved").length}
-                </h2>
-                <p>+ this week</p>
-              </div>
-              <div className="logopart">
-                <i className="ri-check-line text-green-600 logo"></i>
-              </div>
-            </div>
-
-            <div className="totalBeneficiaries top-cards">
-              <div className="textpart">
-                <p>Total Beneficiaries</p>
-                <h2>{requests.length}</h2>
-                <p>Total requests</p>
-              </div>
-              <div className="logopart">
-                <i className="ri-group-line text-purple-600 logo "></i>
-              </div>
-            </div>
+        {/* Sidebar */}
+        <aside className={`admin-sidebar ${isSidebarOpen ? "open" : ""}`}>
+          <div className="sidebar-brand">
+            <h2>HarmonyHope</h2>
+            <p>Admin Portal</p>
           </div>
+          <nav className="sidebar-nav">
+            <button
+              className={`nav-item ${activeTab === "dashboard" ? "active" : ""}`}
+              onClick={() => { setActiveTab("dashboard"); setIsSidebarOpen(false); }}
+            >
+              <i className="ri-dashboard-line"></i>
+              <span>Dashboard</span>
+            </button>
+            <button
+              className={`nav-item ${activeTab === "donations" ? "active" : ""}`}
+              onClick={() => { setActiveTab("donations"); setIsSidebarOpen(false); }}
+            >
+              <i className="ri-hand-heart-line"></i>
+              <span>Donations</span>
+            </button>
+            <button
+              className={`nav-item ${activeTab === "requests" ? "active" : ""}`}
+              onClick={() => { setActiveTab("requests"); setIsSidebarOpen(false); }}
+            >
+              <i className="ri-file-list-3-line"></i>
+              <span>Requests</span>
+            </button>
+          </nav>
+        </aside>
 
-          <div className="donation-card">
-            {/* Header Section */}
-            <div className="donation-header">
-              <div className="donation-header-top">
-                <h3 className="donation-title">Donation Requests</h3>
-                <button className="btn btn-primary" onClick={exportTableData}>
-                  <div className="btn-content">
-                    <i className="ri-download-line"></i>
-                    <span>Export Data</span>
-                  </div>
-                </button>
+        {/* Main Content Area */}
+        <main className="admin-main-content">
+          {activeTab === "dashboard" && (
+            <div className="tabContainer">
+              {/* Stat Cards */}
+              <div className="totalDonation top-cards" onClick={() => setActiveTab("donations")}>
+                <div className="textpart">
+                  <p>Total Donations</p>
+                  <h2>₹{totalDonationsAmount}</h2>
+                  <p>All time donations</p>
+                </div>
+                <div className="logopart">
+                  <i className="ri-money-dollar-circle-line logo "></i>
+                </div>
               </div>
 
-              {/* Filters */}
-              <div className="donation-filters">
-                <div className="search-box">
-                  <input
-                    type="text"
-                    placeholder="Search requests..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                  <i className="ri-search-line"></i>
+              <div className="pendingRequests top-cards" onClick={() => setActiveTab("requests")}>
+                <div className="textpart">
+                  <p>Pending Requests</p>
+                  <h2>{requests.filter((r) => r.status === "pending").length}</h2>
+                  <p>Require review</p>
                 </div>
+                <div className="logopart">
+                  <i className="ri-time-line text-yellow-600 logo "></i>
+                </div>
+              </div>
 
-                <select
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                >
-                  <option>All Status</option>
-                  <option value="pending">Pending</option>
-                  <option value="approved">Approved</option>
-                  <option value="rejected">Rejected</option>
-                </select>
+              <div className="approvedRequests top-cards" onClick={() => setActiveTab("requests")}>
+                <div className="textpart">
+                  <p>Approved Requests</p>
+                  <h2>
+                    {requests.filter((r) => r.status === "approved").length}
+                  </h2>
+                  <p>Approved so far</p>
+                </div>
+                <div className="logopart">
+                  <i className="ri-check-line text-green-600 logo"></i>
+                </div>
+              </div>
 
-                <select
-                  value={categoryFilter}
-                  onChange={(e) => setCategoryFilter(e.target.value)}
-                >
-                  <option>All Categories</option>
-                  <option>Medical</option>
-                  <option>Education</option>
-                  <option>Emergency</option>
-                  <option>Food</option>
-                </select>
-
-                <input
-                  type="date"
-                  value={dateFilter}
-                  onChange={(e) => setDateFilter(e.target.value)}
-                />
-                <button className="btn-clear" onClick={handleClearFilters}>
-                  Clear Filters
-                </button>
+              <div className="totalBeneficiaries top-cards" onClick={() => setActiveTab("requests")}>
+                <div className="textpart">
+                  <p>Total Beneficiaries</p>
+                  <h2>{requests.length}</h2>
+                  <p>Total requests made</p>
+                </div>
+                <div className="logopart">
+                  <i className="ri-group-line text-purple-600 logo "></i>
+                </div>
               </div>
             </div>
+          )}
 
-            {/* Table Section */}
-            <div className="table-wrapper">
-              <table>
-                <thead>
-                  <tr>
-                    <th>
-                      <input type="checkbox" />
-                    </th>
-                    <th>Request ID</th>
-                    <th>Beneficiary</th>
-                    <th>Amount</th>
-                    <th>Category</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredRequests.length > 0 ? (
-                    filteredRequests.map((req) => (
-                      <tr key={req._id}>
-                        <td>
-                          <input type="checkbox" />
-                        </td>
-                        <td>{req._id}</td>
-                        <td>
-                          <div className="beneficiary">
-                            <img
-                              src={`https://ui-avatars.com/api/?name=${req.user?.name}`}
-                              alt={req.user?.name}
-                            />
-                            <div>
-                              <div className="name">{req.user?.name}</div>
-                              <div className="email">{req.user?.email}</div>
-                            </div>
-                          </div>
-                        </td>
-                        <td>₹{req.amount}</td>
-                        <td>{req.requestCategorie}</td>
-                        <td>
-                          <span className={`status ${req.status}`}>
-                            {req.status}
-                          </span>
-                        </td>
-                        <td>
-                          {new Date(req.createdAt).toLocaleDateString()}
-                        </td>
-                        <td>
-                          <button
-                            className="btn btn-green"
-                            onClick={() => handleApprove("approved", req._id)}
-                          >
-                            Approve
-                          </button>
-                          <button
-                            className="btn btn-red"
-                            onClick={() => handleApprove("rejected", req._id)}
-                          >
-                            Reject
-                          </button>
+          {activeTab === "donations" && (
+            <div className="donation-card">
+              <div className="donation-header">
+                <div className="donation-header-top">
+                  <h3 className="donation-title">Donation Details</h3>
+                </div>
+              </div>
+              <div className="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Donation ID</th>
+                      <th>Donor Name</th>
+                      <th>Donor Email</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                      <th>Date</th>
+                      <th>Transaction ID</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {donations.length > 0 ? (
+                      donations.map((don) => (
+                        <tr key={don._id}>
+                          <td>{don._id}</td>
+                          <td>{don.userId?.name || "N/A"}</td>
+                          <td>{don.userId?.email || "N/A"}</td>
+                          <td>₹{don.amount}</td>
+                          <td>
+                            <span className={`status success`}>
+                              {don.status || "success"}
+                            </span>
+                          </td>
+                          <td>{new Date(don.createdAt).toLocaleDateString()}</td>
+                          <td><code>{don.transactionId}</code></td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="7" style={{ textAlign: "center" }}>
+                          No Donations Found
                         </td>
                       </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan="8" style={{ textAlign: "center" }}>
-                        No Requests Found
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-        </div>
+          )}
+
+          {activeTab === "requests" && (
+            <div className="donation-card">
+              {/* Header Section */}
+              <div className="donation-header">
+                <div className="donation-header-top">
+                  <h3 className="donation-title">Requests</h3>
+                  <button className="btn btn-primary" onClick={exportTableData}>
+                    <div className="btn-content">
+                      <i className="ri-download-line"></i>
+                      <span>Export Data</span>
+                    </div>
+                  </button>
+                </div>
+
+                {/* Filters */}
+                <div className="donation-filters">
+                  <div className="search-box">
+                    <input
+                      type="text"
+                      placeholder="Search requests..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    <i className="ri-search-line"></i>
+                  </div>
+
+                  <select
+                    value={statusFilter}
+                    onChange={(e) => setStatusFilter(e.target.value)}
+                  >
+                    <option>All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                  </select>
+
+                  <select
+                    value={categoryFilter}
+                    onChange={(e) => setCategoryFilter(e.target.value)}
+                  >
+                    <option>All Categories</option>
+                    <option value="Medical">Medical</option>
+                    <option value="Education">Education</option>
+                    <option value="Emergency">Emergency</option>
+                    <option value="Food">Food</option>
+                  </select>
+
+                  <input
+                    type="date"
+                    value={dateFilter}
+                    onChange={(e) => setDateFilter(e.target.value)}
+                  />
+                  <button className="btn-clear" onClick={handleClearFilters}>
+                    Clear Filters
+                  </button>
+                </div>
+              </div>
+
+              {/* Table Section */}
+              <div className="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>
+                        <input type="checkbox" />
+                      </th>
+                      <th>Request ID</th>
+                      <th>Beneficiary</th>
+                      <th>Amount</th>
+                      <th>Category</th>
+                      <th>Status</th>
+                      <th>Date</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredRequests.length > 0 ? (
+                      filteredRequests.map((req) => (
+                        <tr key={req._id}>
+                          <td>
+                            <input type="checkbox" />
+                          </td>
+                          <td>{req._id}</td>
+                          <td>
+                            <div className="beneficiary">
+                              <img
+                                src={`https://ui-avatars.com/api/?name=${req.user?.name}`}
+                                alt={req.user?.name}
+                              />
+                              <div>
+                                <div className="name">{req.user?.name}</div>
+                                <div className="email">{req.user?.email}</div>
+                              </div>
+                            </div>
+                          </td>
+                          <td>₹{req.amount}</td>
+                          <td>{req.requestCategorie}</td>
+                          <td>
+                            <span className={`status ${req.status}`}>
+                              {req.status}
+                            </span>
+                          </td>
+                          <td>
+                            {new Date(req.createdAt).toLocaleDateString()}
+                          </td>
+                          <td>
+                            <button
+                              className="btn btn-green"
+                              onClick={() => handleApprove("approved", req._id)}
+                            >
+                              Approve
+                            </button>
+                            <button
+                              className="btn btn-red"
+                              onClick={() => handleApprove("rejected", req._id)}
+                            >
+                              Reject
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="8" style={{ textAlign: "center" }}>
+                          No Requests Found
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+        </main>
       </div>
+      <CustomModal {...modalConfig} />
     </>
   );
 };

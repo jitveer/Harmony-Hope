@@ -1,31 +1,49 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './Donate.module.css';
-import QrCode from 'react-qr-code';
 
 const Donate = () => {
-
-    const [amount, setAmount] = useState(0);
+    const navigate = useNavigate();
+    const [amount, setAmount] = useState("");
     const [loading, setLoading] = useState(false);
     const [qrcode, setQrcode] = useState(null);
-
     const [error, setError] = useState(null);
 
-
-
-
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
+        setLoading(true);
 
-        
-        
-        try {
-            
-        } catch (error) {
-            
+        const token = localStorage.getItem("token");
+        if (!token) {
+            setError("You must be logged in to donate.");
+            setLoading(false);
+            return;
         }
 
+        try {
+            const res = await fetch(`${import.meta.env.VITE_MY_DOMAIN_IP}/api/user/donate`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({ amount: Number(amount) })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                alert("Donation submitted successfully!");
+                navigate('/user-dashboard');
+            } else {
+                setError(data.message || "Something went wrong.");
+            }
+        } catch (err) {
+            console.error("Donation Error:", err);
+            setError("Failed to connect to the server.");
+        } finally {
+            setLoading(false);
+        }
     }
 
 

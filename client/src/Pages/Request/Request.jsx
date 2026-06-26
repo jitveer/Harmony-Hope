@@ -2,6 +2,8 @@ import { useState } from "react";
 import styles from "./Request.module.css";
 import { useNavigate } from "react-router-dom";
 
+
+
 const Request = () => {
   const [reqFormData, setReqFormData] = useState({
     amount: "",
@@ -35,7 +37,7 @@ const Request = () => {
     };
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_MY_DOMAIN_IP}/api/requests/`, {
+      const res = await fetch(`${import.meta.env.VITE_MY_DOMAIN_IP}/api/user/request`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

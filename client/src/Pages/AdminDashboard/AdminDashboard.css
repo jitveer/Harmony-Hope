@@ -1,171 +1,248 @@
 /* ===========================
    Admin Dashboard Main Layout
 =========================== */
-.dashboardContainer {
-  width: 100%;
-  min-height: 100vh;
-  background-color: #f4f6f9;
+.admin-layout {
   display: flex;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  position: relative;
+  font-family: 'Poppins', 'Inter', sans-serif;
+}
+
+/* Sidebar Toggle for Mobile */
+.sidebar-toggle {
+  display: none;
+  position: fixed;
+  top: 1.25rem;
+  left: 1.25rem;
+  z-index: 1000;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  width: 2.75rem;
+  height: 2.75rem;
+  font-size: 1.5rem;
+  align-items: center;
   justify-content: center;
-  align-items: flex-start;
-  font-family: "Poppins", sans-serif;
-  padding: 0;
-  margin: 0;
-  gap: 0;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  transition: all 0.3s ease;
+}
+
+.sidebar-toggle:hover {
+  background: #4338ca;
+  transform: scale(1.05);
 }
 
 /* Sidebar */
-.sideSlider {
-  width: 15%;
-  background: linear-gradient(180deg, #4957e4, #6d7cf3);
-  padding: 2rem 1rem;
+.admin-sidebar {
+  width: 260px;
+  background: #0f172a; /* Sleek dark theme sidebar */
+  color: #f8fafc;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-  min-height: 100vh;
+  padding: 2rem 1.5rem;
+  border-right: 1px solid #1e293b;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 99;
+  transition: transform 0.3s ease;
 }
 
-.tab-button {
-  width: 90%;
-  text-align: center;
-  padding: 0.8rem;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 0.8rem;
-  color: white;
+.sidebar-brand {
+  margin-bottom: 2.5rem;
+}
+
+.sidebar-brand h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.5px;
+  margin: 0;
+}
+
+.sidebar-brand p {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin: 0.25rem 0 0 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1.25rem;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  color: #94a3b8;
+  font-size: 0.95rem;
   font-weight: 500;
-  letter-spacing: 0.5px;
-  transition: all 0.3s ease;
+  text-align: left;
   cursor: pointer;
+  width: 100%;
+  transition: all 0.2s ease;
 }
 
-.tab-button:hover {
-  background: white;
-  color: #4957e4;
-  transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+.nav-item i {
+  font-size: 1.25rem;
 }
 
-/* ===========================
-   Right Side / Content
-=========================== */
-.rightSide {
-  width: 85%;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  background-color: #f4f6f9;
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #f8fafc;
+}
+
+.nav-item.active {
+  background: #4f46e5;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
+}
+
+/* Main Content Area */
+.admin-main-content {
+  flex-grow: 1;
+  margin-left: 260px; /* Offset for fixed sidebar */
+  padding: 2.5rem;
   box-sizing: border-box;
+  background-color: #f8fafc;
+  min-height: 100vh;
+  width: calc(100% - 260px);
 }
 
-/* Cards Container */
+/* Top Stats Cards Container */
 .tabContainer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
 }
 
-/* Cards */
+/* Stats Cards */
 .top-cards {
-  background: white;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex: 1 1 calc(25% - 1rem);
-  min-width: 15rem;
-  max-width: 20rem;
-  border-radius: 1.5rem;
-  padding: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  border: 1px solid #f1f5f9;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.totalDonation:hover,
-.pendingRequests:hover,
-.approvedRequests:hover,
-.totalBeneficiaries:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+.top-cards:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-/* Logo box */
-.logopart {
+.textpart p:first-child {
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 500;
+  margin: 0;
+}
+
+.textpart h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0.5rem 0;
+}
+
+.textpart p:last-child {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.logopart .logo {
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 12px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #ffffff;
 }
 
-.logo {
-  width: 3.7rem;
-  height: 3.7rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 1rem;
-  font-size: 1.8rem;
-  color: white;
-}
-
-/* Gradient colors per card */
+/* Gradients for icons */
 .totalDonation .logo {
-  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
 }
-
 .pendingRequests .logo {
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  background: linear-gradient(135deg, #f59e0b, #d97706);
 }
-
 .approvedRequests .logo {
-  background: linear-gradient(135deg, #a1ffce, #faffd1);
+  background: linear-gradient(135deg, #10b981, #047857);
 }
-
 .totalBeneficiaries .logo {
-  background: linear-gradient(135deg, #d4fc79, #96e6a1);
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
 }
 
 /* ===========================
-   Donation Card Section
+   Donation & Request Cards Section
 =========================== */
 .donation-card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  border: 1px solid #f3f4f6;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  border: 1px solid #f1f5f9;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  margin-top: 1rem;
 }
 
 .donation-header {
   padding: 1.5rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #f1f5f9;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
+  background-color: #ffffff;
 }
 
 .donation-header-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .donation-title {
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   font-weight: 600;
-  color: #111827;
+  color: #0f172a;
+  margin: 0;
 }
 
+/* Buttons */
 .btn {
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
+  padding: 0.625rem 1.25rem;
+  border-radius: 10px;
   font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
+  border: none;
+  outline: none;
 }
 
 .btn-content {
@@ -175,42 +252,50 @@
 }
 
 .btn-primary {
-  background: #2563eb;
-  color: #fff;
+  background: #4f46e5;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);
 }
 
 .btn-primary:hover {
-  background: #1d4ed8;
+  background: #4338ca;
+  box-shadow: 0 4px 8px rgba(79, 70, 229, 0.3);
 }
 
 .btn-green {
-  background: #16a34a;
-  color: #fff;
+  background: #10b981;
+  color: #ffffff;
+  margin-right: 0.5rem;
 }
 
 .btn-green:hover {
-  background: #15803d;
+  background: #059669;
 }
 
 .btn-red {
-  background: #dc2626;
-  color: #fff;
+  background: #ef4444;
+  color: #ffffff;
 }
 
 .btn-red:hover {
-  background: #b91c1c;
+  background: #dc2626;
 }
 
 .btn-clear {
-  color: #4b5563;
+  color: #64748b;
   font-size: 0.875rem;
+  font-weight: 500;
   background: none;
   border: none;
   cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: background 0.2s;
 }
 
 .btn-clear:hover {
-  color: #111827;
+  color: #0f172a;
+  background-color: #f1f5f9;
 }
 
 /* Filters Section */
@@ -224,42 +309,58 @@
 .search-box {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  position: relative;
+  flex-grow: 1;
+  max-width: 350px;
 }
 
 .search-box input {
-  padding: 0.5rem 1rem;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
+  width: 100%;
+  padding: 0.625rem 1rem 0.625rem 2.5rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
   font-size: 0.875rem;
-  min-width: 200px;
+  background-color: #fff;
+  transition: all 0.2s;
 }
 
 .search-box input:focus {
   outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.4);
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.search-box i {
+  position: absolute;
+  left: 0.875rem;
+  color: #94a3b8;
+  font-size: 1.1rem;
+  pointer-events: none;
 }
 
 select,
 input[type="date"] {
-  padding: 0.5rem 1rem;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
+  padding: 0.625rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
   font-size: 0.875rem;
-  background: white;
+  background-color: #fff;
+  color: #334155;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 select:focus,
 input[type="date"]:focus {
-  outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.4);
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
 }
 
 /* Table */
 .table-wrapper {
   overflow-x: auto;
+  background-color: #ffffff;
 }
 
 table {
@@ -268,29 +369,32 @@ table {
 }
 
 thead {
-  background: #f9fafb;
+  background: #f8fafc;
 }
 
 th,
 td {
-  padding: 0.75rem 1.5rem;
+  padding: 1rem 1.5rem;
   text-align: left;
   font-size: 0.875rem;
   white-space: nowrap;
 }
 
 th {
-  color: #6b7280;
-  font-weight: 500;
+  color: #64748b;
+  font-weight: 600;
   text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
 }
 
 tbody tr {
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background-color 0.2s;
 }
 
 tbody tr:hover {
-  background: #f9fafb;
+  background-color: #f8fafc;
 }
 
 .beneficiary {
@@ -300,111 +404,84 @@ tbody tr:hover {
 }
 
 .beneficiary img {
-  height: 2rem;
-  width: 2rem;
-  border-radius: 9999px;
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 50%;
   object-fit: cover;
+  border: 2px solid #e2e8f0;
 }
 
 .name {
-  font-weight: 500;
-  color: #111827;
+  font-weight: 600;
+  color: #0f172a;
   font-size: 0.875rem;
 }
 
 .email {
-  color: #6b7280;
+  color: #64748b;
   font-size: 0.75rem;
 }
 
 .status {
   display: inline-flex;
-  padding: 0.25rem 0.5rem;
+  padding: 0.35rem 0.75rem;
   font-size: 0.75rem;
   font-weight: 600;
   border-radius: 9999px;
+  text-transform: capitalize;
 }
 
 .status.pending {
   background: #fef3c7;
-  color: #92400e;
+  color: #d97706;
 }
 
-.status.approved {
+.status.approved,
+.status.success {
   background: #d1fae5;
-  color: #065f46;
+  color: #059669;
 }
 
 .status.rejected {
   background: #fee2e2;
-  color: #991b1b;
+  color: #dc2626;
+}
+
+code {
+  font-family: monospace;
+  background-color: #f1f5f9;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  color: #0f172a;
 }
 
 /* ===========================
    Responsive Design
 =========================== */
 @media (max-width: 1024px) {
-  .sideSlider {
-    width: 20%;
-    min-height: 100%;
+  .admin-sidebar {
+    display: none !important;
   }
 
-  .rightSide {
-    width: 80%;
+  .sidebar-toggle {
+    display: none !important;
+  }
+
+  .admin-main-content {
+    margin-left: 0;
+    width: 100%;
     padding: 1.5rem;
   }
 
   .tabContainer {
-    justify-content: center;
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 }
 
 @media (max-width: 768px) {
-  .dashboardContainer {
+  .donation-header-top {
     flex-direction: column;
-    justify-content: center;
-  }
-
-  .sideSlider {
-    width: 100%;
-    flex-direction: row;
-    justify-content: space-evenly;
-    min-height: auto;
-    padding: 1rem;
-  }
-
-  .rightSide {
-    width: 100%;
-    padding: 1rem;
-  }
-
-  .tabContainer {
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .top-cards {
-    min-width: 6rem;
-    min-height: 6rem;
-    padding: 0.9rem;
-    justify-content: center;
-  }
-
-  .textpart p {
-    font-size: 0.7rem;
-    margin: 0.4rem 0;
-  }
-
-  .textpart h2 {
-    font-size: 1rem;
-    margin: 0 0;
-  }
-
-  .logopart {
-    width: 2%;
-    
+    align-items: flex-start;
   }
 
   .donation-filters {
@@ -412,7 +489,17 @@ tbody tr:hover {
     align-items: stretch;
   }
 
-  .search-box input {
+  .search-box {
+    max-width: 100%;
+  }
+
+  select,
+  input[type="date"] {
     width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
   }
 }

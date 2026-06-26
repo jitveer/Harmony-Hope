@@ -2,8 +2,11 @@ const Request = require("../models/Request");
 const User = require("../models/User");
 const Notification = require("../models/Notifications");
 
-// Create new Request (User)
 
+
+
+
+// Create new Request (User)
 exports.createRequest = async (req, res) => {
   try {
     const { amount, requestCategorie, reasonForRequest, daysToReturn } = req.body;
@@ -26,7 +29,13 @@ exports.createRequest = async (req, res) => {
 
 
 
-// Request status
+
+
+
+
+
+
+// Request status(user)
 exports.requestStatus = async (req, res) => {
   try {
     const userId = req.user.userId;
@@ -37,6 +46,13 @@ exports.requestStatus = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 }
+
+
+
+
+
+
+
 
 
 // REQUEST DELETE
@@ -54,6 +70,11 @@ exports.requestDelete = async (req, res) => {
     // Check ki yeh request usi user ki hai
     if (request.user.toString() !== userId) {
       return res.status(403).json({ message: "Not authorized to delete this request" });
+    }
+
+    // Check if the request is already approved or rejected
+    if (request.status !== "pending") {
+      return res.status(400).json({ message: "Cannot delete a request that has already been reviewed by admin" });
     }
 
     // Delete karo
@@ -77,7 +98,9 @@ exports.requestDelete = async (req, res) => {
 
 
 
-// Admin: Get all requests (with optional ?status=pending/approved/rejected)
+
+// ADMIN: Get all requests (with optional ?status=pending/approved/rejected)
+
 exports.getAllRequests = async (req, res) => {
   try {
     const { status } = req.query;
@@ -96,45 +119,6 @@ exports.getAllRequests = async (req, res) => {
   }
 };
 
-
-
-
-
-
-
-// Admin: Update status (approve/reject)
-// exports.updateRequestStatus = async (req, res) => {
-//   try {
-//     const adminId = req.user.userId;
-//     const { id } = req.params;
-//     const { status } = req.body; // "approved" | "rejected"
-
-//     const message = `Your request is ${status}`;
-
-
-//       console.log(adminId, id, status);
-
-//     if (!["approved", "rejected"].includes(status)) {
-//       return res.status(400).json({ message: "Invalid status" });
-//     }
-
-//     const update = {
-//       status,
-//       reviewedBy: adminId,
-//       approvedAt: status === "approved" ? new Date() : undefined,
-//     };
-
-//     const doc = await Request.findByIdAndUpdate({ _id: id }, update, { new: true });
-//     if (!doc) return res.status(404).json({ message: "Request not found" });
-
-//     res.json({ message: "Status updated", request: doc });
-
-
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ message: "Server error" });
-//   }
-// };
 
 
 
@@ -181,10 +165,7 @@ exports.updateRequestStatus = async (req, res) => {
     //     type: status === "approved" ? "success" : "warning",
     //   });
     // } catch (notifError) {
-    //   console.error("Notification creation failed:", notifError.message);
-    // }
-
-    // res.json({ message: "Status updated", request: doc });
+    res.json({ message: "Status updated", request: doc });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
@@ -233,3 +214,42 @@ exports.updateRequestStatus = async (req, res) => {
 
 
 // module.exports = { submitRequest };
+
+exports.updateRequest = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const requestId = req.params.id;
+    const { amount, requestCategorie, reasonForRequest, daysToReturn } = req.body;
+
+    const request = await Request.findById(requestId);
+    if (!request) {
+      return res.status(404).json({ message: "Request not found" });
+    }
+
+    if (request.user.toString() !== userId) {
+      return res.status(403).json({ message: "Not authorized to edit this request" });
+    }
+
+    if (request.status !== "pending") {
+      return res.status(400).json({ message: "Cannot edit a request that has already been reviewed by admin" });
+    }
+
+    if (!amount || !requestCategorie || !reasonForRequest || !daysToReturn) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+    if (amount <= 0 || daysToReturn <= 0) {
+      return res.status(400).json({ message: "Invalid amount or daysToReturn" });
+    }
+
+    request.amount = amount;
+    request.requestCategorie = requestCategorie;
+    request.reasonForRequest = reasonForRequest;
+    request.daysToReturn = daysToReturn;
+
+    await request.save();
+    res.status(200).json({ message: "Request updated successfully", request });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};

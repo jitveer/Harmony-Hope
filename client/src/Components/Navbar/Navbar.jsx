@@ -5,16 +5,18 @@ import { useUserTokenValidation } from "../UserTokenVerification/UserTokenVerifi
 import userImage from "/src/assets/user-profile.png";
 import logo from "/src/assets/hormony_hope_charity_logo.png";
 import { ToastContainer, toast } from 'react-toastify';
+import { jwtDecode } from "jwt-decode";
 
 
 /* ICONS */
-import { FaHome, FaInfoCircle, FaUserPlus, FaSignInAlt, FaSignOutAlt, FaBars, FaTachometerAlt, FaBell, FaPhoneAlt } from "react-icons/fa";
+import { FaHome, FaInfoCircle, FaUserPlus, FaSignInAlt, FaSignOutAlt, FaBars, FaTachometerAlt, FaBell, FaPhoneAlt, FaDonate, FaClipboardList } from "react-icons/fa";
 
 
 function Navbar() {
 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [userName, setUserName] = useState("");
+    const [isAdmin, setIsAdmin] = useState(false);
     const { isValidToken, userId, setIsValidToken, setUserId } = useUserTokenValidation();
 
     const navigate = useNavigate();
@@ -32,6 +34,7 @@ function Navbar() {
         setIsValidToken(false);
         setUserId(null);
         setUserName("");
+        setIsAdmin(false);
         navigate("/");
     };
 
@@ -121,7 +124,23 @@ function Navbar() {
     }, [isValidToken, userId])
 
 
-
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token && isValidToken) {
+            try {
+                const decodedUser = jwtDecode(token);
+                if (decodedUser.role === "admin" || decodedUser.role === "superadmin") {
+                    setIsAdmin(true);
+                } else {
+                    setIsAdmin(false);
+                }
+            } catch (error) {
+                setIsAdmin(false);
+            }
+        } else {
+            setIsAdmin(false);
+        }
+    }, [isValidToken]);
 
 
     return (
@@ -145,9 +164,15 @@ function Navbar() {
 
                             {
                                 isValidToken ? (
-
-                                    <Link to="/user-dashboard" className={style["navbar-link"]}>Dashboard</Link>
-
+                                    isAdmin ? (
+                                        <>
+                                            <Link to="/admin-dashboard?tab=dashboard" className={style["navbar-link"]}>Dashboard</Link>
+                                            <Link to="/admin-dashboard?tab=donations" className={style["navbar-link"]}>Donations</Link>
+                                            <Link to="/admin-dashboard?tab=requests" className={style["navbar-link"]}>Requests</Link>
+                                        </>
+                                    ) : (
+                                        <Link to="/user-dashboard" className={style["navbar-link"]}>Dashboard</Link>
+                                    )
                                 ) : (
                                     <>
                                         <Link to="/login" className={style["navbar-link"]}>Login</Link>
@@ -225,7 +250,7 @@ function Navbar() {
                                     <>
                                         <div className={style["userNameSection"]}>
                                             <span className={style["userName"]}>{capitalizeFirstWord(userName)}</span>
-                                            <span className={style["userdesignation"]}>IT Engineer</span>
+                                            <span className={style["userdesignation"]}>{isAdmin ? "Admin" : "IT Engineer"}</span>
                                         </div>
                                     </>
                                 ) : (<></>)
@@ -239,10 +264,27 @@ function Navbar() {
                             </div>
                             {
                                 isValidToken ? (
-                                    <div className={style["mobile-menu-list"]}>
-                                        <FaTachometerAlt />
-                                        <Link to="/user-dashboard" className={style["mobile-menu-link"]} onClick={closeMobileMenu}>Dashboard</Link>
-                                    </div>
+                                    isAdmin ? (
+                                        <>
+                                            <div className={style["mobile-menu-list"]}>
+                                                <FaTachometerAlt />
+                                                <Link to="/admin-dashboard?tab=dashboard" className={style["mobile-menu-link"]} onClick={closeMobileMenu}>Dashboard</Link>
+                                            </div>
+                                            <div className={style["mobile-menu-list"]}>
+                                                <FaDonate />
+                                                <Link to="/admin-dashboard?tab=donations" className={style["mobile-menu-link"]} onClick={closeMobileMenu}>Donations</Link>
+                                            </div>
+                                            <div className={style["mobile-menu-list"]}>
+                                                <FaClipboardList />
+                                                <Link to="/admin-dashboard?tab=requests" className={style["mobile-menu-link"]} onClick={closeMobileMenu}>Requests</Link>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <div className={style["mobile-menu-list"]}>
+                                            <FaTachometerAlt />
+                                            <Link to="/user-dashboard" className={style["mobile-menu-link"]} onClick={closeMobileMenu}>Dashboard</Link>
+                                        </div>
+                                    )
                                 ) : (<></>)
                             }
                             <div className={style["mobile-menu-list"]}>

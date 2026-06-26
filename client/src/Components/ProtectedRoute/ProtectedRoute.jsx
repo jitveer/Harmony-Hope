@@ -12,7 +12,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   try {
     const decodedUser = jwtDecode(token);
     const currentTime = Date.now() / 1000;
-    
+
     // Check for token expiration
     if (decodedUser.exp && decodedUser.exp < currentTime) {
       localStorage.removeItem("token");
@@ -21,7 +21,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 
     // Check if user role is allowed
     if (allowedRoles && !allowedRoles.includes(decodedUser.role)) {
-      if (decodedUser.role === 'admin') {
+      if (decodedUser.role === 'admin' || decodedUser.role === 'superadmin') {
         return <Navigate to="/admin-dashboard" replace />;
       } else if (decodedUser.role === 'user') {
         return <Navigate to="/user-dashboard" replace />;

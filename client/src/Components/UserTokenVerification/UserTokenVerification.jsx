@@ -43,7 +43,7 @@ export const UserTokenVerification = ({ children }) => {
     // verify on first load
     useEffect(() => {
         verifyToken();
-    }, [isValidToken, userId]);
+    }, []);
 
 
     return (

@@ -30,7 +30,7 @@ const Login = ({ onLogin }) => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_MY_DOMAIN_IP}/api/user/login`,
+        `${import.meta.env.VITE_MY_DOMAIN_IP}/api/auth/user-login`,
         {
           method: "POST",
           headers: {
